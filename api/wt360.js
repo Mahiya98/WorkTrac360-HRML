@@ -1,4 +1,4 @@
-const { Client } = require('pg');
+const { Pool } = require('pg');
 const zlib = require('zlib');
 
 function dbConfig() {
@@ -44,24 +44,14 @@ const TABLES = {
 const DATA_TABLES = ['users','roles','dict','tasks','notify'];
 const SQL = { users:'hrml_users', roles:'hrml_roles', dict:'hrml_dict', tasks:'hrml_tasks', notify:'hrml_notify', settings:'hrml_settings', seq:'hrml_seq' };
 
-function client() {
-  return new Client(dbConfig());
-}
-
-async function open(c) {
-  for (let attempt = 0; attempt < 4; attempt++) {
-    try { await c.connect(); return; }
-    catch (e) {
-      if (attempt === 3) throw e;
-      await new Promise(r => setTimeout(r, 150 * (attempt + 1)));
-    }
-  }
-}
+// Reuse a small connection pool across warm invocations so we don't open a
+// brand-new DB connection on every request (critical under high concurrency).
+const pool = new Pool({ ...dbConfig(), max: 3, idleTimeoutMillis: 30000 });
+pool.on('error', () => { /* ignore idle-client errors; pool reconnects */ });
 
 
 async function loadDB() {
-  const c = client();
-  await open(c);
+  const c = await pool.connect();
   try {
     const db = {};
     for (const t of DATA_TABLES) {
@@ -72,24 +62,22 @@ async function loadDB() {
     const modRows = (await c.query(`SELECT value FROM ${SQL.seq} WHERE key = 'mod'`)).rows;
     return { ok: true, db, rev: modRows.length ? Number(modRows[0].value) : 0 };
   } finally {
-    await c.end();
+    c.release();
   }
 }
 
 async function getRev() {
-  const c = client();
-  await open(c);
+  const c = await pool.connect();
   try {
     const r = await c.query(`SELECT value FROM ${SQL.seq} WHERE key = 'mod'`);
     return { ok: true, rev: r.rows.length ? Number(r.rows[0].value) : 0 };
   } finally {
-    await c.end();
+    c.release();
   }
 }
 
 async function saveChanges(upserts, deletes, settings, seq) {
-  const c = client();
-  await open(c);
+  const c = await pool.connect();
   try {
     await c.query('BEGIN');
 
@@ -143,7 +131,7 @@ async function saveChanges(upserts, deletes, settings, seq) {
     await c.query('ROLLBACK');
     throw e;
   } finally {
-    await c.end();
+    c.release();
   }
 }
 
