@@ -1,0 +1,7 @@
+{
+  "cleanUrls": true,
+  "functions": { "api/*.js": { "maxDuration": 60 } },
+  "redirects": [
+    { "source": "/wt360", "destination": "/", "permanent": true }
+  ]
+}

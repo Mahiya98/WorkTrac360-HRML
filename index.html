@@ -1,0 +1,2196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HRML · WorkTrac360</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1F4E78">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="WorkTrac360">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<meta name="description" content="WorkTrac360 — Task assignment, tracking and reporting for Hashem Rice Mills Ltd.">
+<meta name="application-name" content="WorkTrac360">
+<meta name="robots" content="noindex, nofollow">
+<style>
+  :root{
+    --navy:#1F4E78; --navy2:#2E6DA4; --blue:#2E86C1; --teal:#17A589; --orange:#E67E22;
+    --red:#C0392B; --purple:#8E44AD; --grey:#7F8C8D; --line:#e1e8ef; --bg:#eef1f5;
+    --card:#ffffff; --ink:#1f2a33; --muted:#6b7783;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:14px}
+  button,input,select,textarea{font-family:inherit;font-size:14px}
+  .auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 14px;
+    background:linear-gradient(135deg,#16385a,#2E86C1)}
+  .auth-card{background:#fff;border-radius:14px;padding:32px;width:100%;max-width:470px;box-shadow:0 18px 50px rgba(0,0,0,.28)}
+  .auth-brand{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+  .auth-logo{width:42px;height:42px;border-radius:11px;background:var(--navy);color:#fff;display:flex;
+    align-items:center;justify-content:center;font-weight:800;font-size:15px;letter-spacing:.5px}
+  .auth-brand h1{margin:0;font-size:18px;color:var(--navy)}
+  .auth-brand span{font-size:12px;color:var(--muted)}
+  .auth-card p.lead{margin:0 0 18px;color:var(--muted);font-size:13px;line-height:1.5}
+  .link{color:var(--navy);font-weight:700;cursor:pointer;text-decoration:underline}
+  .topbar{background:var(--navy);color:#fff;padding:11px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .topbar .brand{font-weight:700;font-size:15px;display:flex;align-items:center;gap:10px}
+  .topbar .brand .mk{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.16);
+    display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+  .topbar .brand small{display:block;font-weight:400;color:#bcd3e8;font-size:11px}
+  .topbar .spacer{flex:1}
+  .who{display:flex;align-items:center;gap:10px}
+  .avatar{width:34px;height:34px;border-radius:50%;background:#2E86C1;color:#fff;display:flex;align-items:center;
+    justify-content:center;font-weight:700;font-size:13px}
+  .who .nm{font-size:13px;font-weight:600;line-height:1.25}
+  .who .nm small{display:block;font-weight:400;color:#bcd3e8;font-size:11px}
+  .nav{background:#fff;border-bottom:1px solid var(--line);display:flex;gap:2px;padding:0 14px;overflow-x:auto}
+  .nav button{background:none;border:none;padding:13px 14px;cursor:pointer;color:var(--muted);font-weight:600;
+    border-bottom:3px solid transparent;white-space:nowrap;position:relative}
+  .nav button.active{color:var(--navy);border-bottom-color:var(--navy)}
+  .nav .cnt{background:var(--red);color:#fff;border-radius:10px;font-size:10px;padding:1px 6px;margin-left:5px;font-weight:700}
+  .wrap{padding:20px;max-width:1280px;margin:0 auto}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:18px;margin-bottom:16px}
+  .card h2{margin:0 0 4px;font-size:16px;color:var(--navy)}
+  .card .desc{color:var(--muted);font-size:12.5px;margin:0 0 14px}
+  .card h3{margin:16px 0 8px;font-size:14px;color:var(--navy)}
+  .grid{display:grid;gap:14px}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:900px){.g4{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:1fr}.g2{grid-template-columns:1fr}}
+  @media(max-width:520px){.g4{grid-template-columns:1fr}}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:11px;padding:16px;text-align:center}
+  .kpi .v{font-size:25px;font-weight:700;color:var(--navy)}
+  .kpi .l{font-size:11px;color:var(--muted);letter-spacing:.5px;margin-top:4px;text-transform:uppercase}
+  .kpi2{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .kpi2 .t{font-size:12px;color:var(--muted);font-weight:600}
+  .kpi2 .n{font-size:28px;font-weight:700;color:var(--navy);margin:6px 0 4px;line-height:1.1}
+  .kpi2 .s{font-size:11.5px;color:var(--muted)}
+  .sbar{display:flex;height:18px;border-radius:4px;overflow:hidden;background:#eef1f5}
+  .btn{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:9px 15px;cursor:pointer;font-weight:600}
+  .btn:hover{background:var(--navy2)}
+  .btn.sm{padding:6px 11px;font-size:12.5px}
+  .btn.ghost{background:#fff;color:var(--navy);border:1px solid #c7d9ea}
+  .btn.ghost:hover{background:#f0f6fc}
+  .btn.green{background:var(--teal)} .btn.green:hover{background:#128f76}
+  .btn.red{background:var(--red)} .btn.red:hover{background:#a5311f}
+  .btn.grey{background:var(--grey)} .btn.grey:hover{background:#6b7879}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+  .field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+  .field label{font-size:12px;font-weight:600;color:var(--muted)}
+  .field input,.field select,.field textarea{padding:9px 10px;border:1px solid #cfd8e2;border-radius:8px;background:#fff;width:100%}
+  .field textarea{min-height:70px;resize:vertical}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{background:var(--navy);color:#fff;text-align:left;padding:9px 8px;font-weight:600}
+  td{border-bottom:1px solid var(--line);padding:9px 8px;vertical-align:top}
+  tr:nth-child(even) td{background:#fafcfe}
+  .badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}
+  .b-grey{background:#e6eaee;color:#546e7a}
+  .b-blue{background:#e3f0fa;color:#1c6ea4}
+  .b-orange{background:#fdf0e2;color:#b06012}
+  .b-red{background:#fdeaea;color:#a5311f}
+  .b-green{background:#e0f7ea;color:#1E8449}
+  .b-teal{background:#dcf5e6;color:#145A32}
+  .b-purple{background:#f2e9f9;color:#6d33a3}
+  .muted{color:var(--muted)} .small{font-size:12px}
+  .bar{height:20px;border-radius:5px;background:#e8edf3;overflow:hidden}
+  .bar>i{display:block;height:100%}
+  .modal-bg{position:fixed;inset:0;background:rgba(15,30,45,.55);display:flex;align-items:flex-start;justify-content:center;
+    padding:24px 12px;overflow:auto;z-index:50}
+  .modal{background:#fff;border-radius:12px;width:100%;max-width:720px;padding:20px}
+  .modal h2{margin:0 0 12px;color:var(--navy);font-size:17px}
+  .pill{display:inline-block;background:#eef3f8;border-radius:6px;padding:2px 8px;font-size:11.5px;margin:2px 4px 2px 0;color:#40515f}
+  .toast{position:fixed;right:18px;bottom:18px;background:#12304a;color:#fff;padding:12px 16px;border-radius:9px;z-index:99;
+    box-shadow:0 8px 24px rgba(0,0,0,.3);max-width:340px}
+  .empty{padding:26px;text-align:center;color:var(--muted);font-size:13px}
+  .taskrow{display:grid;grid-template-columns:1fr 90px 120px 130px 110px 34px;gap:8px;margin-bottom:8px;align-items:center}
+  @media(max-width:900px){.taskrow{grid-template-columns:1fr 1fr}}
+  tr.task-main{cursor:pointer}
+  tr.task-main:hover td{background:#f4f9fd}
+  tr.task-main.open td{background:#eef6fc}
+  .chev{color:#8aa0b3;font-size:11px;margin-left:2px}
+  table tr.task-detail>td{background:#f8fbfe;border-bottom:1px solid var(--line);padding:14px 16px}
+  tr.task-detail h3{margin:10px 0 6px;font-size:13px;color:var(--navy)}
+  .date-bundle{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:11px 14px;margin-bottom:8px;cursor:pointer;font-size:13.5px}
+  .date-bundle:hover{background:#f4f9fd}
+  .date-bundle.open{background:#eef6fc;border-color:#cfe0ee;border-bottom-left-radius:0;border-bottom-right-radius:0}
+  .date-bundle .grow{flex:1}
+  .bundle{margin-bottom:14px}
+  .bundle-body table{font-size:12.5px}
+  th.col-actions,td.col-actions{width:160px;white-space:nowrap;vertical-align:middle}
+  th.col-sup,td.col-sup{width:180px;white-space:nowrap;vertical-align:middle}
+  .hint{font-size:11.5px;color:var(--muted);margin-top:-4px}
+  .note{background:#fff8e6;border:1px solid #f3e0b3;color:#7a5a12;border-radius:9px;padding:10px 12px;font-size:12.5px;margin-bottom:14px}
+  .ok{background:#e6f7f1;border:1px solid #b7e6d8;color:#0f7a63;border-radius:9px;padding:10px 12px;font-size:12.5px;margin-bottom:14px}
+  .nrow{border:1px solid var(--line);border-radius:9px;padding:12px 14px;margin-bottom:9px;background:#fff}
+  .nrow.unread{background:#f2f8ff;border-color:#cfe3f7}
+  .nrow .t{font-weight:700;color:var(--navy)}
+  .nrow .b{font-size:12.5px;color:#40515f;white-space:pre-wrap;margin-top:3px}
+  .nrow .m{font-size:11px;color:var(--muted);margin-top:5px}
+
+  /* ---------------- Mobile / responsive ---------------- */
+  .tw{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .nav{-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .nav::-webkit-scrollbar{display:none}
+  @media(max-width:900px){
+    .taskrow > input:first-child{grid-column:1 / -1}
+    .taskrow > button{justify-self:start}
+  }
+  @media(max-width:760px){
+    .wrap{padding:14px 12px}
+    .card{padding:14px;border-radius:10px}
+    .card h2{font-size:15px}
+    .topbar{padding:10px 12px;gap:8px}
+    .topbar .brand small{display:none}
+    .who .nm small{font-size:10px}
+    .nav button{padding:11px 12px;font-size:13px}
+    .modal{padding:16px}
+    .modal h2{font-size:16px}
+    .kpi .v{font-size:22px}
+    .kpi2 .n{font-size:24px}
+    .field[style*="min-width"]{min-width:0 !important}
+    input,select,textarea{font-size:16px}
+  }
+  @media(max-width:560px){
+    .wrap{padding:12px 10px}
+    .topbar .brand .mk{width:26px;height:26px;font-size:11px}
+    .avatar{width:30px;height:30px;font-size:12px}
+    .who .nm{font-size:12px}
+    .g2,.g3,.g4{grid-template-columns:1fr}
+    .stats{gap:10px}
+    .taskrow.small{display:none}
+    .modal{padding:14px}
+  }
+    .picker{border:1px solid var(--line);border-radius:8px;max-height:200px;overflow:auto;padding:4px;background:#fff}
+    .picker .pickgroup{font-weight:700;font-size:12px;color:var(--muted);padding:5px 6px 2px;position:sticky;top:0;background:#fff;z-index:1}
+    .picker .pickrow{display:flex;align-items:center;gap:8px;padding:4px 6px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:400;color:#243b53}
+    .picker .pickrow:hover{background:var(--bg)}
+    .picker .pickrow input[type=checkbox]{width:auto;flex:0 0 auto;padding:0;margin:0;border-radius:0;background:transparent}
+    .picker .pickrow span{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .picktools{display:flex;gap:8px;align-items:center;margin:2px 0 4px}
+    .picktools a{font-size:12px;color:var(--blue);cursor:pointer}
+    .bulkbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 12px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#f7fafd}
+    .bulkbar button:disabled{opacity:.45;cursor:not-allowed}
+    .col-sel{width:34px;text-align:center}
+    .col-sel input{width:auto;margin:0}
+    /* Hard internet gate: app is unusable without a connection */
+    #netGate{position:fixed;inset:0;z-index:2147483647;display:none;align-items:center;justify-content:center;background:#0f2233;color:#fff;text-align:center;padding:24px}
+    #netGate.show{display:flex}
+    #netGate .box{max-width:430px;width:100%}
+    #netGate .em{font-size:52px;line-height:1;margin-bottom:14px}
+    #netGate h2{color:#fff;font-size:21px;margin:0 0 8px}
+    #netGate p{color:#c9d6e2;font-size:14px;margin:0 0 20px;line-height:1.5}
+    #netGate button{background:#2E86C1;color:#fff;border:none;border-radius:8px;padding:11px 20px;font-weight:600;cursor:pointer;font-size:14px}
+    #netGate button:hover{background:#2574a9}
+</style>
+</head>
+<body>
+<div id="netGate"><div class="box">
+  <div class="em">&#128225;</div>
+  <h2>No Internet Connection</h2>
+  <p>Please connect to Internet to use WorkTrac360.</p>
+  <button onclick="location.reload()">Retry</button>
+</div></div>
+<div id="app"></div>
+<div id="toast"></div>
+
+<script>
+/* =========================================================================
+   HRML — WORKTRAC360
+   Account types: Supervisor | Team Member.  Identity = Enroll ID only.
+   Data stored in this browser (localStorage). Notifications are in-app.
+   ========================================================================= */
+
+const SECTIONS = ["Production","Packer","Quality","Inventory","HR & Admin","Mechanical","Electrical",
+  "Power Plant","Distribution","Sustainability","OPEX","Civil","Finance","Central Team"];
+
+const STATUSES = ["Not Started","In Progress","Need Support","Blocked","Done","Verified","Reopened"];
+const MEMBER_STATUSES = ["Not Started","In Progress","Need Support","Blocked","Done"];
+const PRIORITIES = ["High","Medium","Low"];
+const SHIFTS = ["General","Durbar","Durjoy","Duronto"];
+const FREQ = ["One-time","Daily","Weekly","Monthly"];
+
+const STATUS_COLOR = {"Not Started":"b-grey","In Progress":"b-blue","Need Support":"b-orange",
+  "Blocked":"b-red","Done":"b-green","Verified":"b-teal","Reopened":"b-purple"};
+const STATUS_HEX = {"Not Started":"#B0BEC5","In Progress":"#2E86C1","Need Support":"#E67E22",
+  "Blocked":"#C0392B","Done":"#2ECC71","Verified":"#1E8449","Reopened":"#8E44AD"};
+const PRIO_COLOR = {"High":"b-red","Medium":"b-orange","Low":"b-grey"};
+
+const LS = 'hrml_task_system_v6';
+const BUILD = '4.12';
+
+/* Super Admin self-registration is protected by this setup code.
+   CHANGE IT to your own value (share only with OPEX leads). */
+const SUPER_SETUP_CODE = 'HRML-OPEX-2026';
+
+/* suggested designations (typing is free — these are only hints) */
+const ROLE_HINTS = {
+  "Production":["Shift Incharge","Line Operator","Packer Operator","Kiln Operator","Helper"],
+  "Packer":["Bagging Incharge","Packer Operator","Helper"],
+  "Quality":["QC Incharge","QC Inspector","Chemist","Lab Assistant"],
+  "Inventory":["Store Officer","Store Keeper"],
+  "HR & Admin":["HR Officer","Admin Officer","Security Guard"],
+  "Mechanical":["Maintenance Incharge","Fitter","Welder","Technician"],
+  "Electrical":["Electrical Incharge","Electrician","Instrument Technician"],
+  "Power Plant":["Power Plant Operator","Boiler Operator"],
+  "Distribution":["Dispatch Officer","Loader"],
+  "Sustainability":["Sustainability Officer"],
+  "OPEX":["OPEX Officer","Data Analyst"],
+  "Civil":["Civil Technician"],
+  "Finance":["Accountant","Finance Officer"],
+  "Central Team":["Team Lead","Executive","Assistant"]
+};
+const SUPERVISOR_HINT = {
+  "Production":"Shift Incharge","Packer":"Bagging Incharge","Quality":"QC Incharge",
+  "Inventory":"Store Incharge","HR & Admin":"HR Incharge","Mechanical":"Maintenance Incharge",
+  "Electrical":"Electrical Incharge","Power Plant":"Power Plant Incharge","Distribution":"Dispatch Incharge",
+  "Sustainability":"Sustainability Incharge","OPEX":"OPEX Incharge","Civil":"Civil Incharge","Finance":"Finance Incharge",
+  "Central Team":"Team Lead"
+};
+
+/* ------------------------------- state ---------------------------------- */
+function blankDB(){
+  return {users:[], roles:[], dict:[], tasks:[], notify:[], tomb:[], settings:{dailyMinutes:480}, seq:{task:1, role:1, dict:1, rev:0}};
+}
+let DB;
+function load(){ try{ const raw=localStorage.getItem(LS); DB=raw?JSON.parse(raw):blankDB(); }catch(e){ DB=blankDB(); } if(!DB.seq) DB.seq=blankDB().seq; if(!DB.settings) DB.settings={dailyMinutes:480}; }
+
+/* ---- Backend: Azure PostgreSQL (per-table sync) ---- */
+const API='/api/wt360';
+let API_OK=false, API_AT=0, API_ERR='';
+let syncing=false;
+let saveTimer=null, saving=false, savePending=false, loaded=false;
+let dbVersion=0, lastServerVersion=0;
+let lastRev=0;
+function apiUrl(){ return API; }
+
+/* ---- row <-> app-shape converters ---- */
+const eMs=v=>v?new Date(v).getTime():0;
+const eIso=n=>n?new Date(+n).toISOString():null;
+const userFromRow=r=>({id:r.id,enroll:r.enroll==null?'':String(r.enroll),name:r.name||'',section:r.section||'',role:r.role||'',type:r.type||'member',status:r.status||'pending',updatedAt:eMs(r.updated_at)});
+const userToRow=u=>({id:u.id,enroll:u.enroll==null?null:String(u.enroll),name:u.name||'',section:u.section||null,role:u.role||null,type:u.type||'member',status:u.status||'pending',updated_at:eIso(u.updatedAt),is_deleted:false});
+const roleFromRow=r=>({id:r.id,section:r.section,name:r.name});
+const roleToRow=r=>({id:r.id,section:r.section,name:r.name});
+const dictFromRow=d=>({id:d.id,section:d.section,role:d.role,title:d.title,estMin:+d.est_min||0,priority:d.priority,frequency:d.frequency});
+const dictToRow=d=>({id:d.id,section:d.section,role:d.role,title:d.title,est_min:+d.estMin||0,priority:d.priority||null,frequency:d.frequency||null});
+const taskFromRow=t=>({id:t.id,code:t.code,title:t.title,desc:t.description||'',section:t.section,role:t.role,assigneeId:t.assignee_id,supervisorId:t.supervisor_id,estMin:+t.est_min||0,actualMin:+t.actual_min||0,priority:t.priority,shift:t.shift,dueDate:t.due_date||'',frequency:t.frequency,status:t.status,createdAt:eMs(t.created_at),updatedAt:eMs(t.updated_at),timerStart:t.timer_start?+t.timer_start:null,attachments:t.attachments||[],comments:t.comments||[],cross:!!t.is_cross,assignedById:t.assigned_by_id,assignedByName:t.assigned_by_name,fromSection:t.from_section});
+const taskToRow=t=>({id:t.id,code:t.code||null,title:t.title,description:t.desc||null,section:t.section||null,role:t.role||null,assignee_id:t.assigneeId||null,supervisor_id:t.supervisorId||null,est_min:+t.estMin||0,actual_min:+t.actualMin||0,priority:t.priority||null,shift:t.shift||null,due_date:t.dueDate||null,frequency:t.frequency||null,status:t.status||'Not Started',created_at:eIso(t.createdAt),updated_at:eIso(t.updatedAt),timer_start:t.timerStart||null,attachments:t.attachments||[],comments:t.comments||[],is_cross:!!t.cross,assigned_by_id:t.assignedById||null,assigned_by_name:t.assignedByName||null,from_section:t.fromSection||null});
+const notifyFromRow=n=>({id:n.id,at:eMs(n.at),to:n.to_user,title:n.title,body:n.body,read:!!n.is_read});
+const notifyToRow=n=>({id:n.id,at:eIso(n.at),to_user:n.to||null,title:n.title||null,body:n.body||null,is_read:!!n.read});
+const ROW={users:[userFromRow,userToRow],roles:[roleFromRow,roleToRow],dict:[dictFromRow,dictToRow],tasks:[taskFromRow,taskToRow],notify:[notifyFromRow,notifyToRow]};
+
+/* Snapshot of the last-known server state, used to diff local changes. */
+const SERVER={users:{},roles:{},dict:{},tasks:{},notify:{}};
+function sig(o){ return JSON.stringify(o); }
+function rebuildServer(){
+  ['users','roles','dict','tasks','notify'].forEach(k=>{ SERVER[k]={}; });
+  DB.users.forEach(x=>SERVER.users[x.id]=sig(userToRow(x)));
+  DB.roles.forEach(x=>SERVER.roles[x.id]=sig(roleToRow(x)));
+  DB.dict.forEach(x=>SERVER.dict[x.id]=sig(dictToRow(x)));
+  DB.tasks.forEach(x=>SERVER.tasks[x.id]=sig(taskToRow(x)));
+  DB.notify.forEach(x=>SERVER.notify[x.id]=sig(notifyToRow(x)));
+}
+
+function save(){
+  try{ localStorage.setItem(LS, JSON.stringify(DB)); }catch(e){}
+  if(isBlankDB()) return;
+  dbVersion++;
+  setSyncStatus('saving');
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(syncSave, 250);
+}
+/* A blank/empty DB must never reach the server — it would wipe everything. */
+function isBlankDB(){
+  return (DB.users||[]).length===0 && (DB.tasks||[]).length===0;
+}
+function tombstone(id){ if(!id) return; if(!Array.isArray(DB.tomb)) DB.tomb=[];
+  if(!DB.tomb.some(x=>x.id===id)) DB.tomb.push({id:id, at:Date.now()}); }
+function tombstoneAll(ids){ (ids||[]).forEach(tombstone); }
+function setSyncStatus(s){
+  const el=document.getElementById('syncState'); if(!el) return;
+  const t=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  el.textContent = s==='saving'?'Saving…':(s==='saved'?('Saved '+t):(s==='error'?'Not saved':''));
+  el.style.color = s==='error'?'#C0392B':'var(--muted)';
+}
+/* gzip a string to an ArrayBuffer (fall back to plain when unsupported). */
+async function gzip(str){
+  if(typeof CompressionStream==='function'){
+    try{
+      const cs=new CompressionStream('gzip');
+      const stream=new Blob([str]).stream().pipeThrough(cs);
+      return await new Response(stream).arrayBuffer();
+    }catch(e){}
+  }
+  return str;
+}
+/* Diff one table against the last-known server state; collect upserts + deletes. */
+function diffTable(t, upserts, deletes, allowDelete){
+  const toRow=ROW[t][1];
+  const sv=SERVER[t]||(SERVER[t]={});
+  const ups=[], seen=new Set();
+  (DB[t]||[]).forEach(item=>{
+    if(!item || item.id==null || item.id==='') return;
+    const row=toRow(item); const k=String(row.id); seen.add(k);
+    if(sv[k]!==sig(row)) ups.push(row);
+  });
+  const del=allowDelete!==false ? Object.keys(sv).filter(k=>!seen.has(k)) : [];
+  if(ups.length) upserts[t]=ups;
+  if(del.length) deletes[t]=del;
+  ups.forEach(r=>{ sv[String(r.id)]=sig(r); });
+  del.forEach(k=>{ delete sv[k]; });
+}
+/* Push only the rows that changed since the last sync (and delete removed rows). */
+async function syncSave(){
+  if(!loaded) return;
+  if(isBlankDB()) return;
+  if(saving){ savePending=true; return; }
+  saving=true; setSyncStatus('saving');
+  try{
+    const upserts={}, deletes={};
+    diffTable('users', upserts, deletes, true);
+    diffTable('roles', upserts, deletes, true);
+    diffTable('dict', upserts, deletes, true);
+    diffTable('tasks', upserts, deletes, true);
+    diffTable('notify', upserts, deletes, false);
+    const settings=[{key:'dailyMinutes', value:+DB.settings.dailyMinutes||480}];
+    const seq=Object.keys(DB.seq||{}).map(k=>({key:k, value:+DB.seq[k]||0})).filter(x=>x.key);
+    const payload=JSON.stringify({action:'save', upserts, deletes, settings, seq});
+    const headers={'Content-Type':'application/json'};
+    const body=await gzip(payload);
+    if(body!==payload) headers['Content-Encoding']='gzip';
+    const r=await fetch(API,{method:'POST',headers:headers,body:body});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const j=await r.json();
+    if(!j.ok) throw new Error(j.error||'save failed');
+    lastServerVersion=dbVersion; API_OK=true; API_AT=Date.now(); API_ERR=''; lastRev=+j.rev||lastRev;
+  }catch(e){ API_OK=false; API_ERR=String((e&&e.message)||e); }
+  saving=false; setSyncStatus(API_OK?'saved':'error');
+  if(savePending){ savePending=false; syncSave(); }
+}
+/* Normalise incoming records to the types the app expects. */
+function normalizeDB(){
+  ['users','roles','dict','tasks','notify','tomb'].forEach(k=>{ if(!Array.isArray(DB[k])) DB[k]=[]; });
+  DB.users.forEach(u=>{ u.enroll=String(u.enroll==null?'':u.enroll); u.name=String(u.name||''); u.role=String(u.role||''); });
+  DB.roles.forEach(r=>{ r.name=String(r.name||''); });
+  DB.dict.forEach(d=>{ d.estMin=+d.estMin||0; d.title=String(d.title||''); });
+  DB.tasks.forEach(t=>{
+    t.dueDate = normDate(t.dueDate);
+    t.estMin=+t.estMin||0; t.actualMin=+t.actualMin||0;
+    if(!Array.isArray(t.attachments)) t.attachments=[];
+    if(!Array.isArray(t.comments)) t.comments=[];
+    if(t.timerStart===undefined) t.timerStart=null;
+  });
+  DB.notify.forEach(n=>{ n.read=!!n.read; });
+}
+/* Pull all tables from the server and rebuild the local DB from them. */
+async function apiLoad(){
+  syncing=true;
+  clearTimeout(saveTimer);
+  if(loaded && !isBlankDB() && dbVersion>lastServerVersion){ try{ await syncSave(); }catch(e){} }
+  try{
+    const r=await fetch(API,{cache:'no-store'});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const j=await r.json();
+    if(!j.ok) throw new Error(j.error||'load failed');
+    const s=j.db||{};
+    const db=blankDB();
+    db.users=(s.users||[]).map(userFromRow);
+    db.roles=(s.roles||[]).map(roleFromRow);
+    db.dict=(s.dict||[]).map(dictFromRow);
+    db.tasks=(s.tasks||[]).map(taskFromRow);
+    db.notify=(s.notify||[]).map(notifyFromRow);
+    db.settings={dailyMinutes:480};
+    (s.settings||[]).forEach(x=>{ if(x.key==='dailyMinutes') db.settings.dailyMinutes=+x.value||480; });
+    db.seq=blankDB().seq;
+    (s.seq||[]).forEach(x=>{ if(x.key!=='mod') db.seq[x.key]=+x.value||0; });
+    db.tomb=[];
+    DB=db; normalizeDB(); rebuildServer();
+    try{ localStorage.setItem(LS, JSON.stringify(DB)); }catch(e){}
+    lastServerVersion=dbVersion; loaded=true; API_OK=true; API_AT=Date.now(); API_ERR=''; lastRev=+j.rev||0;
+    syncing=false; restoreSession();
+    if(savePending){ savePending=false; syncSave(); }
+    return true;
+  }catch(e){ API_ERR=String((e&&e.message)||e); API_OK=false; syncing=false; }
+  return false;
+}
+/* ---- Live sync: Realtime (primary) + focus/manual refresh (fallback) ---- */
+function busyInput(){
+  /* Pause re-render only while the user is typing on the main page. */
+  const ae=document.activeElement; const app=document.getElementById('app');
+  return !!(ae && app && app.contains(ae) && /^(INPUT|SELECT|TEXTAREA)$/.test(ae.tagName));
+}
+async function smartSync(){
+  if(syncing) return false;
+  if(busyInput()) return false;
+  const ok=await apiLoad();
+  if(ok) render();
+  return ok;
+}
+async function manualSync(){
+  if(!apiUrl()){ toast('No backend configured.'); return; }
+  toast('Syncing…');
+  const ok=await apiLoad();
+  if(ok){ render(); toast('Up to date.'); }
+  else toast('Sync failed — '+(API_ERR||'check your connection'));
+}
+async function apiRev(){
+  try{
+    const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'rev'})});
+    if(!r.ok) return -1;
+    const j=await r.json();
+    return (j && j.ok) ? (+j.rev||0) : -1;
+  }catch(e){ return -1; }
+}
+let pollTimer=null;
+function scheduleSyncLoop(){
+  if(pollTimer) clearInterval(pollTimer);
+  /* Poll the server revision every 3s; pull the full DB only when it changed. */
+  pollTimer=setInterval(async ()=>{
+    if(document.hidden || !apiUrl() || syncing || busyInput()) return;
+    try{
+      const rev=await apiRev();
+      if(rev>=0 && rev!==lastRev){
+        const ok=await apiLoad();
+        if(ok) render();
+      }
+    }catch(e){}
+  }, 3000);
+}
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden && current && apiUrl()) smartSync(); });
+window.addEventListener('focus',()=>{ if(current && apiUrl()) smartSync(); });
+window.addEventListener('online',()=>{ updateNetGate(); if(current && apiUrl()) smartSync(); });
+window.addEventListener('offline',()=>{ updateNetGate(); });
+/* Internet gate: the app is unusable without a connection. */
+function updateNetGate(){
+  let off=false;
+  try{ off=(navigator.onLine===false); }catch(e){}
+  const g=document.getElementById('netGate');
+  if(g) g.classList.toggle('show', off);
+  try{ document.documentElement.style.overflow = off ? 'hidden' : ''; }catch(e){}
+  return off;
+}
+
+/* ---- PWA: install prompt + offline service worker ---- */
+let canInstall=false, deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); deferredPrompt=e; canInstall=true; if(current) render(); });
+window.addEventListener('appinstalled',()=>{ canInstall=false; deferredPrompt=null; toast('WorkTrac360 added to your device.'); if(current) render(); });
+function installApp(){
+  if(!deferredPrompt){ toast('Open your browser menu and choose "Add to Home screen".'); return; }
+  deferredPrompt.prompt();
+  if(deferredPrompt.userChoice) deferredPrompt.userChoice.finally(()=>{ deferredPrompt=null; canInstall=false; if(current) render(); });
+}
+if('serviceWorker' in navigator){
+  /* Force already-installed apps to pick up the new online-only worker and drop
+     the old offline app-shell caches the first time they next go online. */
+  const SW_CACHE='wt360-v10';
+  const purgeOldCaches=()=>{ try{ caches.keys().then(ks=>ks.forEach(k=>{ if(k.indexOf('wt360-')===0 && k!==SW_CACHE) caches.delete(k); })); }catch(e){} };
+  window.addEventListener('load',()=>{
+    purgeOldCaches();
+    navigator.serviceWorker.register('sw.js',{updateViaCache:'none'})
+      .then(reg=>{ try{ reg.update(); }catch(e){} })
+      .catch(()=>{});
+  });
+  let swReloaded=false;
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{ if(swReloaded) return; swReloaded=true; purgeOldCaches(); location.reload(); });
+}
+
+/* ------------------------------ helpers --------------------------------- */
+function dateStr(o){ const d=new Date(); d.setDate(d.getDate()+o); const p=n=>String(n).padStart(2,'0'); return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()); }
+/* Convert any incoming date value (plain YYYY-MM-DD, ISO timestamp, or a
+   numeric serial) to a local YYYY-MM-DD string without the UTC day-shift
+   that previously made due dates decrease on every reload. */
+function normDate(v){
+  if(v==null||v==='') return '';
+  const s=String(v).trim();
+  if(/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  if(/^\d+(\.\d+)?$/.test(s) && +s>0 && +s<100000){
+    const d=new Date(Date.UTC(1899,11,30)+(+s)*86400000);
+    const p=n=>String(n).padStart(2,'0');
+    return d.getUTCFullYear()+'-'+p(d.getUTCMonth()+1)+'-'+p(d.getUTCDate());
+  }
+  const d=new Date(s);
+  if(isNaN(d.getTime())) return s.slice(0,10);
+  const p=n=>String(n).padStart(2,'0');
+  return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());
+}
+function uid(p){ return p + Date.now().toString(36) + Math.floor(Math.random()*1000); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function user(id){ return DB.users.find(u=>u.id===id) || {name:'—',section:'',role:'',enroll:''}; }
+function fmt(ts){ if(!ts) return '—'; return new Date(ts).toLocaleString('en-GB',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}); }
+function toDate(s){ return s? new Date(s+'T00:00:00') : null; }
+function isOverdue(t){ return t.dueDate && ['Not Started','In Progress','Need Support','Blocked'].includes(t.status) && toDate(t.dueDate) < new Date(new Date().toDateString()); }
+function badge(x,c){ return `<span class="badge ${c}">${esc(x)}</span>`; }
+function statusBadge(s){ return badge(s, STATUS_COLOR[s]||'b-grey'); }
+function prioBadge(p){ return badge(p, PRIO_COLOR[p]||'b-grey'); }
+function typeBadge(t){
+  if(t==='superadmin') return badge('Super Admin','b-orange');
+  return badge(t==='supervisor'?'Supervisor':'Member', t==='supervisor'?'b-purple':'b-grey');
+}
+function initials(n){ return String(n||'?').trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
+function toast(m){ const el=document.getElementById('toast'); el.innerHTML=`<div class="toast">${esc(m)}</div>`; setTimeout(()=>el.innerHTML='',3200); }
+function notify(toId, title, body){ DB.notify.unshift({id:uid('n'), at:Date.now(), to:toId, title, body, read:false}); if(DB.notify.length>600) DB.notify.pop(); }
+function notifyDept(sec, title, body, exceptId){ DB.users.filter(u=>u.type==='supervisor'&&u.section===sec&&u.status==='approved'&&u.id!==exceptId).forEach(s=>notify(s.id,title,body)); }
+function myNotifs(){ return current? DB.notify.filter(n=>n.to===current.id) : []; }
+function unread(){ return myNotifs().filter(n=>!n.read).length; }
+
+/* access ----------------------------------------------------------------- */
+function isSuper(){ return !!current && current.type==='superadmin'; }
+function visibleTasks(u){
+  if(u.type==='superadmin') return DB.tasks;
+  if(u.type==='supervisor') return DB.tasks.filter(t=>t.section===u.section || t.assignedById===u.id || t.assigneeId===u.id);
+  return DB.tasks.filter(t=>isMyTask(t,u));
+}
+/* A task is "given by me" if I am the supervisor who assigned it, or I raised it
+   as a cross-functional task. */
+function givenByMe(t,u){
+  u=u||current; if(!t||!u) return false;
+  return t.supervisorId===u.id || t.assignedById===u.id;
+}
+/* A task is "mine" if it targets my account or any account sharing my enroll
+   ID (guards against duplicate registrations of the same person). */
+function isMyTask(t,u){
+  u=u||current; if(!t||!u) return false;
+  if(t.assigneeId===u.id) return true;
+  if(t.assignedById===u.id) return true;   /* cross-functional task I raised */
+  const me=String(u.enroll||'').trim().toLowerCase(); if(!me) return false;
+  const a=DB.users.find(x=>x.id===t.assigneeId);
+  return !!(a && String(a.enroll||'').trim().toLowerCase()===me);
+}
+function deptSupervisors(sec){ return DB.users.filter(u=>u.type==='supervisor' && u.section===sec && u.status==='approved'); }
+function rolesOf(sec){ return DB.roles.filter(r=>r.section===sec).sort((a,b)=>a.name.localeCompare(b.name)); }
+/* Role list for assignment, built from the people actually in that section
+   (so the label always matches what members have). Falls back to DB.roles too. */
+function memberRolesOf(sec){
+  const s=(x)=>String(x==null?'':x).trim().toLowerCase();
+  const map={};
+  rolesOf(sec).forEach(r=>{ if(r.name){ const k=s(r.name); if(!map[k]) map[k]=r.name; } });
+  DB.users.filter(u=>u.section===sec && u.type==='member' && u.status==='approved').forEach(u=>{
+    if(u.role){ const k=s(u.role); if(!map[k]) map[k]=u.role; }
+  });
+  return Object.keys(map).sort().map(k=>map[k]);
+}
+function ensureRole(sec, name){
+  name = String(name||'').trim(); if(!name) return;
+  if(!DB.roles.some(r=>r.section===sec && r.name.toLowerCase()===name.toLowerCase()))
+    DB.roles.push({id:uid('r'), section:sec, name});
+}
+
+let current=null, view='dashboard', taskFilter='All', authMode='signin', authMsg=null;
+let dateBasis='due', dateFrom=dateStr(0), dateTo=dateStr(0);
+/* Dashboard date range — defaults to today. */
+let dashFrom=dateStr(0), dashTo=dateStr(0);
+/* Dashboard department filter — '' means all departments. */
+let dashDept='';
+function periodRange(){
+  const from=dashFrom||dateStr(0);
+  let to=dashTo||from;
+  if(to<from) to=from;
+  return {from:from, to:to};
+}
+
+/* ------------------------------- render --------------------------------- */
+function render(){
+  const app=document.getElementById('app');
+  if(!current){
+    if(authMode==='register') app.innerHTML = registerView();
+    else if(authMode==='superadmin') app.innerHTML = superAdminView();
+    else app.innerHTML = loginView();
+    return;
+  }
+  app.innerHTML = shell();
+  wrapTables(app);
+}
+/* Let wide data tables scroll horizontally inside their card on small screens. */
+function wrapTables(root){
+  if(!root) return;
+  root.querySelectorAll('table').forEach(t=>{
+    if(t.parentElement && t.parentElement.classList.contains('tw')) return;
+    const d=document.createElement('div'); d.className='tw';
+    t.parentNode.insertBefore(d,t); d.appendChild(t);
+  });
+}
+
+/* --------------------------------- auth --------------------------------- */
+function loginView(){
+  const none = DB.users.length===0;
+  return `<div class="auth-wrap"><div class="auth-card">
+    <div class="auth-brand"><div class="auth-logo">HRML</div>
+      <div><h1>WorkTrac360</h1><span>Hashem Rice Mills Ltd.</span></div></div>
+    <p class="lead">Sign in with your Enroll ID.</p>
+    ${authMsg?`<div class="ok">${esc(authMsg)}</div>`:''}
+    ${none?`<div class="note"><b>Getting started:</b> no accounts yet. Register the first <b>Supervisor</b> for a department — they can then add their team.</div>`:''}
+    <div class="field"><label>Enroll ID</label><input id="loginId" placeholder="e.g. 560501" onkeydown="if(event.key==='Enter')loginByInput()"></div>
+    <button class="btn" style="width:100%" onclick="loginByInput()">Sign in</button>
+    <p style="margin:14px 0 0;font-size:13px">New user? <span class="link" onclick="showRegister()">Register here</span></p>
+    <p style="margin:10px 0 0;font-size:11px;color:var(--muted)">WorkTrac360 build ${BUILD}</p>
+  </div></div>`;
+}
+function registerView(){
+  const secOpts=SECTIONS.map(s=>`<option>${esc(s)}</option>`).join('');
+  return `<div class="auth-wrap"><div class="auth-card">
+    <div class="auth-brand"><div class="auth-logo">HRML</div>
+      <div><h1>Register</h1><span>Hashem Rice Mills Ltd.</span></div></div>
+    <p class="lead">Team members need approval from their department supervisor. Supervisors can sign in immediately.</p>
+    ${authMsg?`<div class="ok">${esc(authMsg)}</div>`:''}
+    <div class="field"><label>Registering as</label>
+      <select id="srType" onchange="hintRole()">
+        <option value="member">Team Member</option>
+        <option value="supervisor">Supervisor</option>
+      </select></div>
+    <div class="field"><label>Full name</label><input id="srName" placeholder="e.g. Abdul Karim"></div>
+    <div class="row">
+      <div class="field" style="flex:1;min-width:150px"><label>Enroll ID</label><input id="srEnroll" placeholder="e.g. 560901"></div>
+      <div class="field" style="flex:1;min-width:170px"><label>Department</label>
+        <select id="srSection" onchange="hintRole()">${secOpts}</select></div>
+    </div>
+    <div class="field"><label>Role / Designation <span class="muted" style="font-weight:400">— type your own</span></label>
+      <input id="srRole" placeholder="e.g. Line Operator"></div>
+    <div id="srErr" class="note" style="display:none;margin:0 0 10px"></div>
+    <button class="btn" style="width:100%" onclick="selfRegister()">Submit registration</button>
+    <p style="margin:12px 0 0;font-size:13px"><span class="link" onclick="showSignin()">← Back to sign in</span></p>
+    <p style="margin:8px 0 0;font-size:12.5px"><span class="link" onclick="showSuperAdmin()">Super Admin access</span></p>
+  </div></div>`;
+}
+function superAdminView(){
+  return `<div class="auth-wrap"><div class="auth-card">
+    <div class="auth-brand"><div class="auth-logo">HRML</div>
+      <div><h1>Super Admin access</h1><span>Hashem Rice Mills Ltd.</span></div></div>
+    <p class="lead">Restricted area. Enter the setup code to register a Super Admin account.</p>
+    ${authMsg?`<div class="ok">${esc(authMsg)}</div>`:''}
+    <div class="field"><label>Setup code</label><input id="saCode" type="password" placeholder="Enter setup code"></div>
+    <div class="field"><label>Full name</label><input id="saName" placeholder="e.g. Md. Injamamul Haque"></div>
+    <div class="row">
+      <div class="field" style="flex:1;min-width:150px"><label>Enroll ID</label><input id="saEnroll" placeholder="e.g. 567822"></div>
+      <div class="field" style="flex:1;min-width:170px"><label>Department</label>
+        <select id="saSection">${SECTIONS.map(s=>`<option>${esc(s)}</option>`).join('')}</select></div>
+    </div>
+    <div class="field"><label>Designation</label><input id="saRole" placeholder="e.g. Manager – OPEX"></div>
+    <button class="btn" style="width:100%" onclick="registerSuperAdmin()">Create Super Admin</button>
+    <p style="margin:12px 0 0;font-size:13px"><span class="link" onclick="showRegister()">← Back to registration</span></p>
+  </div></div>`;
+}
+function showSuperAdmin(){ authMode='superadmin'; authMsg=null; render(); }
+function registerSuperAdmin(){
+  const code=(document.getElementById('saCode').value||'').trim();
+  const name=document.getElementById('saName').value.trim();
+  const enroll=document.getElementById('saEnroll').value.trim();
+  const section=document.getElementById('saSection').value;
+  const role=document.getElementById('saRole').value.trim()||'Super Admin';
+  if(code!==SUPER_SETUP_CODE){ toast('Invalid setup code.'); return; }
+  if(!name||!enroll){ toast('Please fill name and enroll ID.'); return; }
+  if(DB.users.some(u=>u.enroll.toLowerCase()===enroll.toLowerCase())){ toast('This enroll ID is already registered.'); return; }
+  const anySuper=DB.users.some(u=>u.type==='superadmin' && u.status==='approved');
+  DB.users.push({id:uid('u'), enroll, name, section, role, type:'superadmin', status: anySuper?'pending':'approved', updatedAt:Date.now()});
+  if(anySuper){
+    DB.users.filter(u=>u.type==='superadmin'&&u.status==='approved').forEach(s=>notify(s.id,'Super Admin registration',`${name} (${enroll}) requested Super Admin access. Approve or reject in Team.`));
+    authMsg='Request submitted. An existing Super Admin must approve it before you can sign in.';
+  } else {
+    authMsg='Super Admin created. You can sign in now.';
+  }
+  save(); authMode='signin'; render();
+}
+function hintRole(){
+  const sec=document.getElementById('srSection').value;
+  const type=document.getElementById('srType').value;
+  const inp=document.getElementById('srRole');
+  if(inp && !inp.value.trim()){
+    inp.placeholder = type==='superadmin' ? 'Super Admin'
+      : (type==='supervisor' ? (SUPERVISOR_HINT[sec]||'Supervisor') : ((ROLE_HINTS[sec]||[])[0]||'Role'));
+  }
+}
+function showRegister(){ authMode='register'; authMsg=null; render(); }
+function showSignin(){ authMode='signin'; authMsg=null; render(); }
+
+function selfRegister(){
+  let type=document.getElementById('srType').value;
+  const name=document.getElementById('srName').value.trim();
+  const enroll=document.getElementById('srEnroll').value.trim();
+  const section=document.getElementById('srSection').value;
+  const role=document.getElementById('srRole').value.trim();
+  const errEl=document.getElementById('srErr');
+  const fail=(m)=>{ if(errEl){ errEl.textContent=m; errEl.style.display='block'; } toast(m); return; };
+  if(!name) return fail('Please enter your full name.');
+  if(!enroll) return fail('Please enter your Enroll ID.');
+  if(!role) return fail('Please enter your Role / Designation (e.g. Line Operator).');
+  if(DB.users.some(u=>String(u.enroll).toLowerCase()===enroll.toLowerCase())) return fail('This Enroll ID is already registered. Try signing in instead.');
+  ensureRole(section, role);
+
+  /* public registration can only create Team Member or Supervisor */
+  if(type!=='supervisor') type='member';
+
+  if(type==='supervisor'){
+    DB.users.push({id:uid('u'), enroll, name, section, role, type, status:'approved', updatedAt:Date.now()});
+    notifyDept(section, 'New supervisor', `${name} (${enroll}) joined ${section} as ${role}.`, null);
+    save(); authMsg='Supervisor account created. You can sign in now.'; authMode='signin'; render(); return;
+  }
+  DB.users.push({id:uid('u'), enroll, name, section, role, type, status:'pending', updatedAt:Date.now()});
+  const sups=deptSupervisors(section);
+  sups.forEach(s=>notify(s.id, 'Registration pending', `${name} (${enroll}) registered as ${role} in ${section}. Approve or reject in Team.`));
+  save();
+  authMsg = sups.length ? 'Registration submitted. Your supervisor will approve it.'
+                        : 'Registration submitted. It will be approved once a supervisor is available for your department.';
+  authMode='signin'; render();
+}
+function loginByInput(){
+  const v=(document.getElementById('loginId').value||'').trim().toLowerCase();
+  const cands=DB.users.filter(x=>String(x.enroll).trim().toLowerCase()===v);
+  if(!cands.length){ toast('No account found for this enroll ID.'); return; }
+  const valid=cands.filter(u=>u.status==='approved');
+  const pool=valid.length?valid:cands;
+  /* Prefer a clean department, then the record holding the most tasks. */
+  const score=u=>{ let s=0; if(SECTIONS.indexOf(String(u.section||'').trim())>=0) s+=100;
+    s+=DB.tasks.filter(t=>t.assigneeId===u.id).length; if(u.type==='supervisor') s+=5; return s; };
+  const u=pool.slice().sort((a,b)=>score(b)-score(a))[0];
+  if(u.status!=='approved'){ toast('Your registration is awaiting supervisor approval.'); return; }
+  login(u.id);
+}
+/* ---- stay signed in across reloads ---- */
+const SESS_KEY='wt360_session';
+function setSession(id){ try{ if(id) localStorage.setItem(SESS_KEY,id); else localStorage.removeItem(SESS_KEY); }catch(e){} }
+/* Re-attach `current` to the live user record in DB (and drop it if the
+   account vanished or is no longer approved). */
+function restoreSession(){
+  let sid=null; try{ sid=localStorage.getItem(SESS_KEY); }catch(e){}
+  if(!sid){ current=null; return; }
+  const u=DB.users.find(x=>x.id===sid);
+  if(u && u.status==='approved') current=u;
+  else { current=null; setSession(null); }
+}
+function login(id){ current=DB.users.find(u=>u.id===id); view='dashboard'; authMsg=null; setSession(id); render(); }
+function logout(){ current=null; authMode='signin'; authMsg=null; setSession(null); render(); }
+
+/* --------------------------------- shell -------------------------------- */
+function shell(){
+  const tabs=[['dashboard','Dashboard'],['tasks','Tasks'],['given','Given Task']];
+  if(current.type!=='member'){ tabs.push(['mytasks','My Tasks']); tabs.push(['assign','Assign Task']); tabs.push(['cross','Cross Functional']); tabs.push(['team','Team']); tabs.push(['dictionary','Roles & Dictionary']); tabs.push(['workload','Workload']); tabs.push(['reports','Reports']); }
+  if(isSuper()) tabs.push(['departments','Departments']);
+  tabs.push(['notify','Notifications']);
+  const myOpen=DB.tasks.filter(t=>isMyTask(t,current) && t.status!=='Done' && t.status!=='Verified').length;
+  const nav=tabs.map(([k,l])=>{
+    let c='';
+    if(k==='notify' && unread()) c=`<span class="cnt">${unread()}</span>`;
+    if(k==='mytasks' && myOpen) c=`<span class="cnt">${myOpen}</span>`;
+    return `<button class="${view===k?'active':''}" onclick="go('${k}')">${l}${c}</button>`;
+  }).join('');
+  let body='';
+  switch(view){
+    case 'dashboard': body=dashboardView(); break;
+    case 'tasks': body=tasksView(); break;
+    case 'given': body=givenView(); break;
+    case 'mytasks': body=myTasksView(); break;
+    case 'assign': body=assignView(); break;
+    case 'cross': body=crossView(); break;
+    case 'team': body=teamView(); break;
+    case 'dictionary': body=dictView(); break;
+    case 'workload': body=workloadView(); break;
+    case 'reports': body=reportsView(); break;
+    case 'departments': body=departmentsView(); break;
+    case 'notify': body=notifyView(); break;
+  }
+  return `
+  <div class="topbar">
+    <div class="brand"><div class="mk">HRML</div><div>WorkTrac360<small>Hashem Rice Mills Ltd.</small></div></div>
+    <div class="spacer"></div>
+    <div class="who"><div class="avatar">${esc(initials(current.name))}</div>
+      <div class="nm">${esc(current.name)}<small>${typeBadge(current.type)} ${esc(current.section)} · ${esc(current.role)}</small></div></div>
+    ${canInstall?'<button class="btn ghost sm" onclick="installApp()" title="Install app">Install</button>':''}
+    <span id="syncState" class="small muted"></span>
+    <button class="btn ghost sm" onclick="manualSync()" title="${API_ERR?('Last sync error: '+esc(API_ERR)):'Sync now'}">⟳ Sync${API_OK?'':' •'}</button>
+    <button class="btn ghost sm" onclick="logout()">Log out</button>
+  </div>
+  <div class="nav">${nav}</div>
+  <div class="wrap">${body}</div>`;
+}
+function go(v){ view=v; if(v==='notify') myNotifs().forEach(n=>n.read=true); taskFilter='All'; save(); render(); }
+
+/* --------------------- super admin: full dashboard ---------------------- */
+function superDashboardView(){
+  const deptFilter=dashDept;
+  const deptLabel=deptFilter||'All departments';
+  const deptScope=SECTIONS.filter(s=>!deptFilter||s===deptFilter);
+  const inDept=u=>!deptFilter||u.section===deptFilter;
+  const ts=deptFilter?DB.tasks.filter(t=>t.section===deptFilter):DB.tasks;
+  const est=ts.reduce((a,t)=>a+(+t.estMin||0),0), act=ts.reduce((a,t)=>a+(+t.actualMin||0),0);
+  const overdue=ts.filter(isOverdue).length;
+  const done=ts.filter(t=>t.status==='Done'||t.status==='Verified').length;
+  const completion=ts.length?Math.round(done*100/ts.length):0;
+  const people=DB.users.filter(u=>u.status==='approved'&&u.type!=='superadmin'&&inDept(u)).length;
+  const pendingUsers=DB.users.filter(u=>u.status==='pending'&&inDept(u)).length;
+  const activeDepts=new Set(ts.map(t=>t.section)).size;
+
+  const deptStats=deptScope.map(s=>{
+    const sups=DB.users.filter(u=>u.type==='supervisor'&&u.section===s&&u.status==='approved').length;
+    const mems=DB.users.filter(u=>u.type==='member'&&u.section===s&&u.status==='approved').length;
+    const pnd=DB.users.filter(u=>u.status==='pending'&&u.section===s).length;
+    const t=ts.filter(x=>x.section===s);
+    const c={}; STATUSES.forEach(k=>c[k]=0); t.forEach(x=>c[x.status]++);
+    const dn=c.Done+c.Verified;
+    const e=t.reduce((a,x)=>a+(+x.estMin||0),0), ac=t.reduce((a,x)=>a+(+x.actualMin||0),0);
+    const ov=t.filter(isOverdue).length;
+    return {s,sups,mems,pnd,n:t.length,c,dn,e,ac,ov,comp:t.length?Math.round(dn*100/t.length):0};
+  });
+
+  const legend=STATUSES.map(k=>`<span class="pill" style="border-left:5px solid ${STATUS_HEX[k]}">${esc(k)}</span>`).join('');
+
+  const summaryRows=deptStats.map(d=>`<tr>
+    <td><b>${esc(d.s)}</b></td>
+    <td>${d.sups}</td><td>${d.mems}</td><td>${d.pnd?badge(d.pnd,'b-orange'):'—'}</td>
+    <td><b>${d.n}</b></td><td>${d.dn}</td>
+    <td><div class="bar" style="min-width:70px"><i style="width:${d.comp}%;background:${d.comp>=75?'#2ECC71':d.comp>=40?'#E67E22':'#C0392B'}"></i></div><span class="small">${d.comp}%</span></td>
+    <td>${d.ov?badge(d.ov,'b-red'):'—'}</td>
+    <td class="small">${d.e} / ${d.ac}</td>
+    <td><button class="btn sm ghost" onclick="window.__teamSec='${d.s}';go('team')">Team</button>
+        <button class="btn sm ghost" onclick="window.__assignSec='${d.s}';window.__assignRole='';assignRows=[];go('assign')">Assign</button>
+        <button class="btn sm ghost" onclick="window.__repSec='${d.s}';go('reports')">Report</button></td></tr>`).join('');
+
+  const stacked=deptStats.filter(d=>d.n>0).map(d=>{
+    const segs=STATUSES.filter(k=>d.c[k]>0).map(k=>`<div style="width:${(d.c[k]*100/d.n).toFixed(2)}%;background:${STATUS_HEX[k]}" title="${esc(k)}: ${d.c[k]}"></div>`).join('');
+    return `<tr><td style="white-space:nowrap;padding-right:12px"><b>${esc(d.s)}</b></td>
+      <td style="width:100%"><div style="display:flex;height:16px;border-radius:4px;overflow:hidden;background:#eef1f5">${segs}</div></td>
+      <td style="padding-left:12px;text-align:right"><b>${d.n}</b></td></tr>`;
+  }).join('')||'<tr><td colspan="3" class="empty">No tasks yet.</td></tr>';
+
+  const detailRows=deptStats.map(d=>`<tr><td><b>${esc(d.s)}</b></td>
+    ${STATUSES.map(k=>`<td>${d.c[k]||'—'}</td>`).join('')}<td><b>${d.n}</b></td>
+    <td class="small">${d.e} / ${d.ac}</td></tr>`).join('');
+
+  const overList=ts.filter(isOverdue).sort((a,b)=>(a.dueDate||'').localeCompare(b.dueDate||'')).slice(0,10).map(t=>`
+    <tr><td class="small">${esc(t.dueDate)}</td>
+      <td><b>${esc(t.code)}</b><div class="small muted">${esc(t.title)}</div></td>
+      <td class="small">${esc(t.section)}</td><td class="small">${esc(user(t.assigneeId).name)}</td>
+      <td>${statusBadge(t.status)}</td>
+      <td><button class="btn sm ghost" onclick="openTask('${t.id}')">Open</button></td></tr>`).join('');
+
+  const recent=ts.slice().sort((a,b)=>b.updatedAt-a.updatedAt).slice(0,8).map(t=>`
+    <tr><td><b>${esc(t.code)}</b><div class="small muted">${esc(t.title)}</div></td>
+      <td class="small">${esc(t.section)}</td><td>${esc(user(t.assigneeId).name)}</td>
+      <td>${statusBadge(t.status)}</td><td class="small">${fmt(t.updatedAt)}</td>
+      <td><button class="btn sm ghost" onclick="openTask('${t.id}')">Open</button></td></tr>`).join('');
+
+  /* ---------------- period-scoped performance metrics ---------------- */
+  const pr=periodRange();
+  const pDays=daysBetween(pr.from,pr.to);
+  const perDay=+DB.settings.dailyMinutes||480;
+  const capRange=perDay*pDays;
+  const periodLabel=(pr.from===dateStr(0)&&pr.to===dateStr(0))?'Today':(pr.from===pr.to?pr.from:pr.from+' &rarr; '+pr.to);
+  let pts=ts.filter(t=>t.dueDate && t.dueDate>=pr.from && t.dueDate<=pr.to);
+
+  const totalP=pts.length;
+  const doneP=pts.filter(t=>t.status==='Done'||t.status==='Verified').length;
+  const verifiedP=pts.filter(t=>t.status==='Verified').length;
+  const completionPct=totalP?Math.round(doneP*100/totalP):0;
+  const estP=pts.reduce((a,t)=>a+(+t.estMin||0),0);
+  const actP=pts.reduce((a,t)=>a+(+t.actualMin||0),0);
+  const adherencePct=estP?Math.round(estP*100/Math.max(actP,1)):0;
+  const lateP=pts.filter(t=>(t.status==='Done'||t.status==='Verified') && t.dueDate && dstr(t.updatedAt)>t.dueDate).length;
+  const onTimePct=doneP?Math.round((doneP-lateP)*100/doneP):0;
+  const approvalPct=doneP?Math.round(verifiedP*100/doneP):0;
+  const memberCount=DB.users.filter(u=>u.status==='approved'&&u.type==='member'&&inDept(u)).length;
+  const capAll=memberCount*capRange;
+  const loadPct=capAll?Math.round(estP*100/capAll):0;
+  const score=Math.round(completionPct*0.50+onTimePct*0.30+adherencePct*0.20);
+  const employees=DB.users.filter(u=>u.status==='approved'&&u.type!=='superadmin'&&inDept(u)).length;
+  const overdueP=pts.filter(isOverdue).length;
+
+  /* ---------------- role aggregation ---------------- */
+  const roleAgg={};
+  pts.forEach(t=>{
+    const k=t.section+'\u0001'+t.role;
+    const a=roleAgg[k]||(roleAgg[k]={s:t.section,role:t.role,assigned:0,completed:0,onTime:0,mins:0});
+    a.assigned++; a.mins+=(+t.estMin||0);
+    if(t.status==='Done'||t.status==='Verified'){ a.completed++; if(t.dueDate && dstr(t.updatedAt)<=t.dueDate) a.onTime++; }
+  });
+  const roleRowsAgg=Object.keys(roleAgg).map(k=>{
+    const a=roleAgg[k];
+    a.members=DB.users.filter(u=>u.status==='approved'&&u.type==='member'&&u.section===a.s&&u.role===a.role).length;
+    a.cap=a.members*capRange;
+    a.load=a.cap?Math.round(a.mins*100/a.cap):0;
+    a.perf=a.assigned?Math.round(a.completed*100/a.assigned):0;
+    a.signal=a.load>100?'Redistribute load':(a.load<80?'Available capacity':'Healthy');
+    return a;
+  }).sort((a,b)=>b.load-a.load);
+
+  const roleLoadRows=roleRowsAgg.slice(0,6).map(a=>{
+    const col=a.load>100?'#C0392B':(a.load<80?'#E67E22':'#2E86C1');
+    return `<div style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline">
+        <div><b>${esc(a.role)}</b><div class="small muted">${a.members} ${a.members===1?'person':'people'} | ${a.cap.toLocaleString()} min capacity</div></div>
+        <div style="font-weight:700;color:${col}">${a.load}%</div></div>
+      <div class="bar" style="margin-top:5px"><i style="width:${Math.min(a.load,100)}%;background:${col}"></i></div>
+    </div>`;
+  }).join('')||'<div class="empty">No tasks in this period.</div>';
+
+  const signalBadge=s=> s==='Healthy'?badge('Healthy','b-green'):(s==='Redistribute load'?badge('Redistribute load','b-red'):badge('Available capacity','b-orange'));
+  const rolePerfRows=roleRowsAgg.map(a=>`<tr>
+      <td><b>${esc(a.role)}</b><div class="small muted">${esc(a.s)}</div></td>
+      <td>${a.assigned}</td><td>${a.completed}</td><td>${a.onTime}</td>
+      <td>${a.load}%</td><td>${a.perf}%</td><td>${signalBadge(a.signal)}</td></tr>`).join('')
+      ||'<tr><td colspan=7 class="empty">No role activity in this period.</td></tr>';
+
+  const donut=(v,col)=>{ v=Math.max(0,Math.min(100,v));
+    return `<svg width="150" height="150" viewBox="0 0 42 42" style="display:block;margin:0 auto">
+      <circle cx="21" cy="21" r="15.9" fill="none" stroke="#e8edf3" stroke-width="6"></circle>
+      <circle cx="21" cy="21" r="15.9" fill="none" stroke="${col}" stroke-width="6" stroke-linecap="round"
+        stroke-dasharray="${v} ${100-v}" stroke-dashoffset="25"></circle>
+      <text x="21" y="21.5" text-anchor="middle" dominant-baseline="middle" font-size="9" font-weight="700" fill="#1F4E78">${v}%</text>
+    </svg>`;
+  };
+
+  return `
+  <div class="card" style="padding:16px 20px">
+    <div class="row" style="justify-content:space-between;align-items:center">
+      <div>
+        <h2 style="margin:0 0 4px">Daily operations overview</h2>
+        <div class="small muted">${new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'})} &nbsp;|&nbsp; ${esc(deptLabel)} &nbsp;|&nbsp; ${employees} employees</div>
+      </div>
+      <div class="row" style="align-items:center;gap:14px">
+        <div class="field" style="min-width:180px;margin:0"><label>Department</label>
+          <select onchange="dashDept=this.value;render()">
+            <option value="" ${dashDept===''?'selected':''}>All departments</option>
+            ${SECTIONS.map(s=>`<option ${dashDept===s?'selected':''}>${esc(s)}</option>`).join('')}
+          </select></div>
+        <div class="field" style="min-width:160px;margin:0"><label>From</label>
+          <input type="date" value="${dashFrom}" onchange="dashFrom=this.value||dateStr(0);render()"></div>
+        <div class="field" style="min-width:160px;margin:0"><label>To</label>
+          <input type="date" value="${dashTo}" onchange="dashTo=this.value||dateStr(0);render()"></div>
+        <button class="btn ghost sm" onclick="dashDept='';dashFrom=dateStr(0);dashTo=dateStr(0);render()">Reset</button>
+        <div class="small muted">Last updated ${new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid g3" style="margin-bottom:16px">
+    <div class="kpi2"><div class="t">Assigned workload</div>
+      <div class="n" style="color:${loadColor(loadPct)}">${loadPct}%</div>
+      <div class="s">Balanced target: 80–95%${loadPct>100?' · overloaded':(loadPct<80?' · underloaded':'')}</div></div>
+    <div class="kpi2"><div class="t">Task completion</div>
+      <div class="n" style="color:#2E86C1">${completionPct}%</div>
+      <div class="s">${doneP} of ${totalP} tasks done</div></div>
+    <div class="kpi2"><div class="t">On-time completion</div>
+      <div class="n" style="color:${onTimePct>=80?'#1E8449':'#E67E22'}">${onTimePct}%</div>
+      <div class="s">${lateP} task(s) completed late</div></div>
+  </div>
+
+  <div class="grid">
+    <div class="card"><h2>Role-wise workload</h2>
+      <p class="desc">Load = assigned minutes ÷ capacity (${perDay} min × ${pDays} day(s) × members).</p>
+      ${roleLoadRows}
+      <div class="small muted" style="margin-top:6px">
+        <span style="color:#E67E22">●</span> Below 80%: underloaded &nbsp;&nbsp;
+        <span style="color:#2E86C1">●</span> 80–100%: balanced &nbsp;&nbsp;
+        <span style="color:#C0392B">●</span> Above 100%: overloaded</div>
+    </div>
+  </div>
+
+  <div class="card"><h2>Role performance and action signals</h2>
+    <table><tr><th>Role</th><th>Assigned</th><th>Completed</th><th>On time</th><th>Load</th><th>Performance</th><th>Signal</th></tr>
+    ${rolePerfRows}</table>
+    <p class="hint">Use planned minutes — not task count — for workload decisions because task durations differ.</p>
+  </div>
+
+  <div class="card" style="padding:12px 18px">
+    <div class="small muted">      Departments active <b>${activeDepts}/${deptScope.length}</b> &nbsp;·&nbsp; People <b>${people}</b> &nbsp;·&nbsp;
+      Pending approvals <b style="color:${pendingUsers?'#C0392B':'#1E8449'}">${pendingUsers}</b> &nbsp;·&nbsp;
+      Date range <b>${periodLabel}</b> &nbsp;·&nbsp; Overdue <b style="color:${overdueP?'#C0392B':'#1E8449'}">${overdueP}</b> &nbsp;·&nbsp;
+      Super Admin view — ${esc(deptLabel)}</div>
+  </div>
+
+  <div class="card"><h2>${esc(deptLabel)} — Key Data</h2>
+    <p class="desc">Summary of every department. Use the buttons to open that department directly.</p>
+    <table><tr><th>Department</th><th>Supervisors</th><th>Members</th><th>Pending</th><th>Tasks</th><th>Done</th>
+      <th>Completion</th><th>Overdue</th><th>Est / Actual min</th><th>Actions</th></tr>
+      ${summaryRows}</table>
+  </div>
+
+  <div class="card"><h2>Department-wise Status Mix</h2>
+    <p class="desc">Each bar shows how a department's tasks are distributed across statuses.</p>
+    <div style="margin-bottom:10px">${legend}</div>
+    <table>${stacked}</table>
+  </div>
+
+  <div class="card"><h2>Department × Status Detail</h2>
+    <table><tr><th>Department</th>${STATUSES.map(k=>`<th>${esc(k)}</th>`).join('')}<th>Total</th><th>Est / Actual</th></tr>
+      ${detailRows}</table>
+  </div>
+
+  <div class="grid g2">
+    <div class="card"><h2>Attention — Overdue Tasks</h2>
+      <table><tr><th>Due</th><th>Task</th><th>Department</th><th>Assignee</th><th>Status</th><th></th></tr>
+      ${overList||'<tr><td colspan=6 class="empty">No overdue tasks.</td></tr>'}</table></div>
+    <div class="card"><h2>Recent Activity (${esc(deptLabel)})</h2>
+      <table><tr><th>Task</th><th>Department</th><th>Assignee</th><th>Status</th><th>Updated</th><th></th></tr>
+      ${recent||'<tr><td colspan=6 class="empty">No activity yet.</td></tr>'}</table></div>
+  </div>`;
+}
+
+/* ------------------------------ dashboard ------------------------------- */
+function dashboardView(){
+  if(isSuper()) return superDashboardView();
+  const ts=visibleTasks(current);
+  const byStatus={}; STATUSES.forEach(s=>byStatus[s]=0); ts.forEach(t=>byStatus[t.status]=(byStatus[t.status]||0)+1);
+  const est=ts.reduce((a,t)=>a+(+t.estMin||0),0), act=ts.reduce((a,t)=>a+(+t.actualMin||0),0);
+  const overdue=ts.filter(isOverdue).length;
+  const done=ts.filter(t=>t.status==='Done'||t.status==='Verified').length;
+  const completion=ts.length?Math.round(done*100/ts.length):0;
+  const bars=STATUSES.filter(s=>byStatus[s]>0).map(s=>{
+    const pct=ts.length?Math.round(byStatus[s]*100/ts.length):0;
+    const col=STATUS_HEX[s]||'#7F8C8D';
+    return `<div style="margin-bottom:9px">
+      <div class="small" style="display:flex;justify-content:space-between;align-items:center">
+        <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:${col};margin-right:7px;vertical-align:-1px"></span>${esc(s)}</span>
+        <span><b>${byStatus[s]}</b> · ${pct}%</span></div>
+      <div class="bar"><i style="width:${pct}%;background:${col}"></i></div></div>`;
+  }).join('')||'<div class="empty">No tasks yet.</div>';
+  const recent=ts.slice().sort((a,b)=>b.updatedAt-a.updatedAt).slice(0,6).map(t=>`
+    <tr><td><b>${esc(t.code)}</b><div class="small muted">${esc(t.title)}</div></td>${isSuper()?`<td class="small">${esc(t.section)}</td>`:''}<td>${esc(user(t.assigneeId).name)}</td>
+      <td>${statusBadge(t.status)}</td><td class="small">${fmt(t.updatedAt)}</td>
+      <td><button class="btn sm ghost" onclick="openTask('${t.id}')">Open</button></td></tr>`).join('');
+  let deptBlock='';
+  if(isSuper()){
+    const bySec={}; ts.forEach(t=>bySec[t.section]=(bySec[t.section]||0)+1);
+    const rows=Object.keys(bySec).sort((a,b)=>bySec[b]-bySec[a]).map(s=>`<tr><td>${esc(s)}</td><td>${bySec[s]}</td></tr>`).join('');
+    deptBlock=`<div class="card"><h2>Tasks by Department</h2><p class="desc">All departments (Super Admin view).</p>
+      <table><tr><th>Department</th><th>Tasks</th></tr>${rows||'<tr><td colspan=2 class="empty">—</td></tr>'}</table></div>`;
+  }
+  return `
+  <div class="grid g4" style="margin-bottom:16px">
+    <div class="kpi"><div class="v">${ts.length}</div><div class="l">Total Tasks</div></div>
+    <div class="kpi"><div class="v" style="color:#17A589">${completion}%</div><div class="l">Completion</div></div>
+    <div class="kpi"><div class="v" style="color:#C0392B">${overdue}</div><div class="l">Overdue</div></div>
+    <div class="kpi"><div class="v">${est} / ${act}</div><div class="l">Est. / Actual min</div></div>
+  </div>
+  <div class="grid g2">
+    <div class="card"><h2>Task Status</h2><p class="desc">Distribution of tasks by current status.</p>${bars}</div>
+    <div class="card"><h2>Time Adherence</h2><p class="desc">Estimated vs actual time recorded.</p>
+      <div class="small" style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Estimated</span><span><b>${est} min</b></span></div>
+      <div class="bar" style="margin-bottom:12px"><i style="width:${Math.max(est,act)?Math.round(est*100/Math.max(est,act)):0}%;background:#2E86C1"></i></div>
+      <div class="small" style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Actual</span><span><b>${act} min</b></span></div>
+      <div class="bar"><i style="width:${Math.max(est,act)?Math.round(act*100/Math.max(est,act)):0}%;background:${act>est?'#C0392B':'#17A589'}"></i></div>
+      <p class="small muted" style="margin-top:12px">${est?`Adherence <b style="color:${act>est?'#C0392B':'#17A589'}">${Math.round(est*100/Math.max(act,1))}%</b> — ${act>est?'actual exceeded estimate':'within estimate'}.`:'No time recorded yet.'}</p>
+    </div>
+  </div>
+  ${deptBlock}
+  <div class="card"><h2>Recent Activity</h2>
+    <table><tr><th>Task</th>${isSuper()?'<th>Department</th>':''}<th>Assignee</th><th>Status</th><th>Updated</th><th></th></tr>${recent||`<tr><td colspan=${isSuper()?6:5} class="empty">No activity yet.</td></tr>`}</table></div>`;
+}
+
+/* -------------------------------- tasks --------------------------------- */
+let expandedTask=null, expandedDates=null;
+let bulkSel=new Set();
+function toggleTaskDetail(id){ expandedTask = expandedTask===id ? null : id; render(); }
+function toggleDate(k){ if(!expandedDates) expandedDates=new Set(); if(expandedDates.has(k)) expandedDates.delete(k); else expandedDates.add(k); render(); }
+function fmtDateLabel(d){
+  if(!d) return 'No due date';
+  const dt=new Date(d+'T00:00:00');
+  return dt.toLocaleDateString('en-GB',{weekday:'short',day:'2-digit',month:'short',year:'numeric'});
+}
+function dateTag(d){
+  if(!d) return '';
+  const today=dateStr(0), tmr=dateStr(1);
+  if(d<today) return badge('Overdue','b-red');
+  if(d===today) return badge('Today','b-teal');
+  if(d===tmr) return badge('Tomorrow','b-blue');
+  return '';
+}
+function showSupervisorColumn(){ return isSuper() || current.type==='supervisor'; }
+function taskRowHtml(t){
+  const open=expandedTask===t.id;
+  const sup=showSupervisorColumn();
+  const supCell = sup?`<td class="col-sup" onclick="event.stopPropagation()">
+      ${t.status==='Done'?`<button class="btn sm green" onclick="verifyTask('${t.id}',1)">✔ Verify</button>
+      <button class="btn sm red" onclick="verifyTask('${t.id}',0)">↺ Reopen</button>`:'—'}</td>`:'';
+  const main=`<tr class="task-main${open?' open':''}" onclick="toggleTaskDetail('${t.id}')">
+    ${current.type!=='member'?`<td class="col-sel" onclick="event.stopPropagation()"><input type="checkbox" class="rowsel" value="${t.id}" ${bulkSel.has(t.id)?'checked':''} onchange="bulkToggle('${t.id}',this.checked)"></td>`:''}
+    <td><b>${esc(t.code)}</b> <span class="chev">${open?'▾':'▸'}</span><div class="small muted">${esc(t.title)}</div></td>
+    <td>${esc(t.section)}<div class="small muted">${esc(t.role)}</div></td>
+    <td>${esc(user(t.assigneeId).name)}</td>
+    <td>${statusBadge(t.status)} ${prioBadge(t.priority)}</td>
+    <td class="small">${t.estMin}m est<br>${t.actualMin}m act</td>
+    ${supCell}
+    <td class="col-actions" onclick="event.stopPropagation()">
+      <button class="btn sm ${open?'ghost':''}" onclick="toggleTaskDetail('${t.id}')">${open?'Hide':'Details'}</button>
+      ${current.type!=='member'?`<button class="btn sm red" onclick="deleteTask('${t.id}')">Delete</button>`:''}</td></tr>`;
+  const detail = open ? `<tr class="task-detail"><td colspan="${(sup?7:6)+(current.type!=='member'?1:0)}">${taskPanel(t)}</td></tr>` : '';
+  return main+detail;
+}
+function statusChips(ts){
+  const counts={}; ts.forEach(t=>counts[t.status]=(counts[t.status]||0)+1);
+  return ['All',...STATUSES].map(s=>{ const n=s==='All'?ts.length:(counts[s]||0);
+    return `<button class="btn sm ${taskFilter===s?'':'ghost'}" onclick="setFilter('${s}')">${s} (${n})</button>`; }).join(' ');
+}
+function filteredTasks(ts){ return ts.filter(t=>taskFilter==='All'||t.status===taskFilter); }
+/* ---- multi-select bulk actions (verify / reopen / delete many at once) ---- */
+function bulkBar(){
+  if(current.type==='member') return '';
+  const n=bulkSel.size, dis=n?'':' disabled';
+  return `<div class="bulkbar" id="bulkbar">
+    <label class="small" style="display:flex;align-items:center;gap:6px;cursor:pointer">
+      <input type="checkbox" onchange="bulkSelectAllShown(this.checked)"> Select all shown</label>
+    <span class="small" data-count><b>${n}</b> selected</span>
+    <button class="btn sm green" data-bulk${dis} onclick="bulkVerify(1)">✔ Verify selected</button>
+    <button class="btn sm red" data-bulk${dis} onclick="bulkVerify(0)">↺ Reopen selected</button>
+    <button class="btn sm red" data-bulk${dis} onclick="bulkDelete()">Delete selected</button>
+    <button class="btn sm ghost" data-bulk${dis} onclick="bulkClear()">Clear</button>
+  </div>`;
+}
+function bulkToggle(id,on){ if(on) bulkSel.add(id); else bulkSel.delete(id); updateBulkBar(); }
+function updateBulkBar(){
+  const bar=document.getElementById('bulkbar'); if(!bar) return;
+  const c=bar.querySelector('[data-count]'); if(c) c.innerHTML='<b>'+bulkSel.size+'</b> selected';
+  bar.querySelectorAll('button[data-bulk]').forEach(b=>{ b.disabled=!bulkSel.size; });
+}
+function bulkSelectAllShown(on){
+  document.querySelectorAll('input.rowsel').forEach(cb=>{ cb.checked=on; if(on) bulkSel.add(cb.value); else bulkSel.delete(cb.value); });
+  updateBulkBar();
+}
+function bulkToggleBundle(on, el){
+  const tbl=el&&el.closest?el.closest('table'):null; if(!tbl) return;
+  tbl.querySelectorAll('input.rowsel').forEach(cb=>{ cb.checked=on; if(on) bulkSel.add(cb.value); else bulkSel.delete(cb.value); });
+  updateBulkBar();
+}
+function bulkClear(){ bulkSel.clear(); render(); }
+function bulkVerify(ok){
+  const ids=[...bulkSel].filter(id=>DB.tasks.some(t=>t.id===id));
+  if(!ids.length){ toast('No tasks selected.'); return; }
+  if(!confirm((ok?'Verify':'Reopen')+' '+ids.length+' selected task(s)?')) return;
+  ids.forEach(id=>{ const t=DB.tasks.find(x=>x.id===id); if(!t) return;
+    t.status=ok?'Verified':'Reopened'; t.updatedAt=Date.now();
+    notify(t.assigneeId, `Task ${t.code} ${ok?'verified':'reopened'}`, `${current.name} ${ok?'verified':'reopened'} ${t.code} (${t.title}).`);
+  });
+  save(); bulkSel.clear(); toast(ids.length+' task(s) '+(ok?'verified':'reopened')+'.'); render();
+}
+function bulkDelete(){
+  const ids=[...bulkSel].filter(id=>DB.tasks.some(t=>t.id===id));
+  if(!ids.length){ toast('No tasks selected.'); return; }
+  if(!confirm('Delete '+ids.length+' selected task(s)? This cannot be undone.')) return;
+  const set=new Set(ids);
+  ids.forEach(id=>{ const t=DB.tasks.find(x=>x.id===id); if(!t) return;
+    tombstone(id); notify(t.assigneeId, 'Task deleted', `${current.name} deleted task ${t.code} (${t.title}).`); });
+  DB.tasks=DB.tasks.filter(t=>!set.has(t.id));
+  save(); bulkSel.clear(); toast(ids.length+' task(s) deleted.'); render();
+}
+function taskListHtml(list){
+  if(expandedDates===null) expandedDates=new Set([dateStr(0)]);
+  const groups={};
+  list.forEach(t=>{ const k=t.dueDate||''; (groups[k]=groups[k]||[]).push(t); });
+  const keys=Object.keys(groups).filter(k=>k).sort().reverse();
+  if(groups['']) keys.push('');
+  return keys.map(k=>{
+    const tasks=groups[k].slice().sort((a,b)=>{
+      const ai=STATUSES.indexOf(a.status), bi=STATUSES.indexOf(b.status);
+      return (ai-bi) || a.code.localeCompare(b.code);
+    });
+    const open=expandedDates.has(k);
+    const overdue=tasks.filter(isOverdue).length;
+    const done=tasks.filter(t=>t.status==='Done'||t.status==='Verified').length;
+    const head=`<div class="date-bundle${open?' open':''}" onclick="toggleDate('${k}')">
+      <span class="chev">${open?'▾':'▸'}</span>
+      <b>${esc(fmtDateLabel(k))}</b> ${dateTag(k)}
+      <span class="grow"></span>
+      <span class="small muted">${tasks.length} task${tasks.length>1?'s':''}${done?' · '+done+' done':''}${overdue?' · <span style="color:#C0392B;font-weight:700">'+overdue+' overdue</span>':''}</span>
+    </div>`;
+    if(!open) return `<div class="bundle">${head}</div>`;
+    const rows=tasks.map(taskRowHtml).join('');
+    const supTh = showSupervisorColumn()?`<th class="col-sup">Supervisor</th>`:'';
+    const selTh = current.type!=='member'?`<th class="col-sel"><input type="checkbox" title="Select all in this day" onchange="bulkToggleBundle(this.checked,this)"></th>`:'';
+    return `<div class="bundle">${head}<div class="bundle-body">
+      <table><tr>${selTh}<th>Task</th><th>Department / Role</th><th>Assignee</th><th>Status</th><th>Time</th>${supTh}<th class="col-actions">Actions</th></tr>${rows}</table>
+    </div></div>`;
+  }).join('');
+}
+function tasksView(){
+  const ts=visibleTasks(current);
+  return `<div class="card"><h2>Tasks ${current.type==='member'?'assigned to me':(isSuper()?'— all departments':'')}</h2>
+    <p class="desc">Tasks are bundled by due date. Click a date to see that day's tasks, then click a task to update it.${current.type==='member'?'':' Supervisors can verify or reopen inline.'}</p>
+    <div style="margin-bottom:12px">${statusChips(ts)}</div>
+    ${bulkBar()}
+    ${taskListHtml(filteredTasks(ts))||'<div class="empty">No tasks found.</div>'}</div>`;
+}
+function myTasksView(){
+  const ts=DB.tasks.filter(t=>isMyTask(t,current));
+  return `<div class="card"><h2>My Tasks</h2>
+    <p class="desc">Tasks assigned to you${current.type==='supervisor'?' (as well as your department tasks under "Tasks")':''}. Update your status, log time, and add comments here.</p>
+    <div style="margin-bottom:12px">${statusChips(ts)}</div>
+    ${bulkBar()}
+    ${taskListHtml(filteredTasks(ts))||'<div class="empty">No tasks assigned to you yet.</div>'}</div>`;
+}
+/* Given Task: tasks this user gave to someone else (personal to the giver). */
+function givenView(){
+  const ts=DB.tasks.filter(t=>givenByMe(t,current));
+  const rows=ts.slice().sort((a,b)=>(+b.createdAt||0)-(+a.createdAt||0));
+  return `<div class="card"><h2>Given Task</h2>
+    <p class="desc">Tasks you have given to others — only you can see this list. ${rows.length} task(s).</p>
+    <div style="margin-bottom:12px">${statusChips(ts)}</div>
+    ${bulkBar()}
+    ${taskListHtml(filteredTasks(ts))||'<div class="empty">You have not given any task yet.</div>'}</div>`;
+}
+function setFilter(s){ taskFilter=s; render(); }
+
+/* ------------------------------ assign task ----------------------------- */
+let assignRows=[];
+function assignView(){
+  const sec = isSuper() ? (window.__assignSec || SECTIONS[0]) : current.section;
+  const scope = isSuper() ? (window.__assignScope || 'dept') : 'dept';
+  const roles=memberRolesOf(sec);
+  const rNorm = window.__assignRole ? String(window.__assignRole).trim().toLowerCase() : '';
+  const roleSel = rNorm ? (roles.find(r=>String(r).trim().toLowerCase()===rNorm) || roles[0]) : (roles[0]||'');
+  if(roleSel) window.__assignRole=roleSel;   /* register the default role */
+  let members;
+  if(scope==='all'){
+    members=DB.users.filter(u=>u.type==='member' && u.status==='approved')
+      .sort((a,b)=>((a.section+a.name).localeCompare(b.section+b.name)));
+  }else{
+    const rr=rNorm||'';
+    members=DB.users.filter(u=>u.type==='member' && u.section===sec && (!rr||String(u.role||'').trim().toLowerCase()===rr) && u.status==='approved');
+  }
+  const dict=DB.dict.filter(d=>d.section===sec && (!roleSel||String(d.role||'').trim().toLowerCase()===rNorm));
+  if(!assignRows.length) assignRows=[{title:'',estMin:30,priority:'Medium',frequency:'One-time'}];
+  const roleOptions=roles.map(r=>`<option ${r===roleSel?'selected':''}>${esc(r)}</option>`).join('');
+  const memberPicker=memberPickerHtml('assignMember','__assignSel',members,
+    scope==='all'
+      ? { groupOf:m=>m.section, labelOf:m=>`${m.name} · ${m.role} (${m.enroll}) · ${m.type}` }
+      : { labelOf:m=>`${m.name} (${m.enroll}) · ${m.type}` });
+  const freqSel=window.__dictFreq||'All';
+  const dictMatch=dict.filter(d=>freqSel==='All'||d.frequency===freqSel);
+  const dictPreview=dictMatch.length?dictMatch.map(d=>`<div class="small" style="display:flex;justify-content:space-between;border-bottom:1px solid #eef1f4;padding:4px 0">
+      <span>${esc(d.title)} <span class="muted">· ${esc(d.frequency)} · ${esc(d.priority)}</span></span><span>${d.estMin} min</span></div>`).join('')
+    :'<span class="small muted">No saved tasks for this frequency.</span>';
+  const rowsHtml=assignRows.map((r,i)=>`
+    <div class="taskrow">
+      <input placeholder="Task title" value="${esc(r.title)}" oninput="assignRows[${i}].title=this.value">
+      <input type="number" min="1" title="Estimated minutes" value="${r.estMin}" oninput="assignRows[${i}].estMin=this.value">
+      <select onchange="assignRows[${i}].priority=this.value">${PRIORITIES.map(p=>`<option ${p===r.priority?'selected':''}>${p}</option>`).join('')}</select>
+      <select onchange="assignRows[${i}].frequency=this.value">${FREQ.map(f=>`<option ${f===r.frequency?'selected':''}>${f}</option>`).join('')}</select>
+      <input type="date" value="${r.dueDate||dateStr(0)}" oninput="assignRows[${i}].dueDate=this.value">
+      <button class="btn sm red" onclick="removeRow(${i})" title="Remove">×</button>
+    </div>`).join('');
+  return `<div class="card"><h2>Assign Task</h2>
+    <p class="desc">${scope==='all'?'<b>Any employee mode</b> — pick anyone across all departments and roles. Each task is filed under that employee\'s own department and role.':'Pick a role and member(s), then add one or more tasks. Each task carries its own estimated time in minutes.'}</p>
+    ${isSuper()?`<div class="row" style="margin-bottom:6px">
+      <label class="small" style="display:flex;align-items:center;gap:6px;cursor:pointer">
+        <input type="checkbox" ${scope==='all'?'checked':''} onchange="window.__assignScope=this.checked?'all':'dept';assignRows=[];window.__assignSel=[];window.__assignSel_q='';render()">
+        Assign to any employee (all departments &amp; roles)
+      </label></div>`:''}
+    <div class="row">
+      ${isSuper() && scope!=='all'?`<div class="field" style="min-width:180px"><label>Department</label>
+        <select onchange="window.__assignSec=this.value;window.__assignRole='';assignRows=[];window.__assignSel=[];window.__assignSel_q='';render()">
+          ${SECTIONS.map(s=>`<option ${s===sec?'selected':''}>${esc(s)}</option>`).join('')}</select></div>`:''}
+      ${scope!=='all'?`<div class="field" style="min-width:190px"><label>Role</label>
+        <select onchange="window.__assignRole=this.value;window.__assignSel=[];window.__assignSel_q='';render()">${roleOptions||'<option value="">— add people/roles first —</option>'}</select></div>`:''}
+      <div class="field" style="min-width:250px"><label>Assign to member(s)</label>
+        ${pickerTools('assignMember','__assignSel')}
+        <div id="assignMember" class="picker">${memberPicker}</div>
+      </div>
+      <div class="field" style="min-width:150px"><label>Shift</label>
+        <select id="assignShift">${SHIFTS.map(s=>`<option>${s}</option>`).join('')}</select></div>
+    </div>
+    ${scope!=='all'?`<h3>Load from dictionary — ${esc(roleSel||'this role')}</h3>
+    <div class="row">
+      <div class="field" style="min-width:190px"><label>Frequency</label>
+        <select onchange="window.__dictFreq=this.value;render()">
+          <option ${freqSel==='All'?'selected':''}>All</option>
+          ${FREQ.map(f=>`<option ${freqSel===f?'selected':''}>${f}</option>`).join('')}
+        </select></div>
+      <button class="btn" onclick="loadFromDict()">⬇ Load ${dictMatch.length} task(s)</button>
+    </div>
+    <div style="margin:10px 0 4px">${dictPreview}</div>`:''}
+    <h3>Tasks to assign</h3>
+    <div class="taskrow small muted" style="font-weight:600"><div>Task title</div><div>Est. min</div><div>Priority</div><div>Frequency</div><div>Due date</div><div></div></div>
+    ${rowsHtml}
+    <button class="btn ghost sm" onclick="addRow()">+ Add another task</button>
+    <hr style="border:none;border-top:1px solid var(--line);margin:16px 0">
+    <button class="btn" onclick="submitAssign()">Assign &amp; notify member(s)</button>
+    <button class="btn ghost" onclick="saveDictFromRows()">Save these as role task list</button>
+  </div>`;
+}
+function addRow(){ assignRows.push({title:'',estMin:30,priority:'Medium',frequency:'One-time'}); render(); }
+/* ---- reusable searchable multi-select (used by Assign & Cross Functional) ---- */
+function memberPickerHtml(containerId, selKey, members, opts){
+  opts=opts||{};
+  const labelOf=opts.labelOf||(m=>`${m.name} (${m.enroll})`);
+  const groupOf=opts.groupOf||null;
+  const hayOf=opts.hayOf||(m=>`${m.name||''} ${m.role||''} ${m.enroll||''} ${m.section||''}`.toLowerCase());
+  if(!Array.isArray(window[selKey])) window[selKey]=[];
+  const selSet=new Set(window[selKey]);
+  const q=String(window[selKey+'_q']||'').toLowerCase().trim();
+  if(!members.length) return '<div class="small muted" style="padding:8px 2px">— none available —</div>';
+  let groups;
+  if(groupOf){ const gs=[]; members.forEach(m=>{ const g=groupOf(m); if(!gs.includes(g)) gs.push(g); }); groups=gs.map(g=>({g:g,list:members.filter(m=>groupOf(m)===g)})); }
+  else groups=[{g:null,list:members}];
+  return groups.map(({g,list})=>{
+    const anyMatch=!q||list.some(m=>hayOf(m).indexOf(q)>=0);
+    const head=g?`<div class="pickgroup"${anyMatch?'':' style="display:none"'}>${esc(g)}</div>`:'';
+    const rows=list.map(m=>{
+      const match=!q||hayOf(m).indexOf(q)>=0;
+      return `<label class="pickrow" data-hay="${esc(hayOf(m))}"${match?'':' style="display:none"'}><input type="checkbox" value="${m.id}" ${selSet.has(m.id)?'checked':''} onchange="pickToggle('${selKey}',this.value,this.checked)"><span>${esc(labelOf(m))}</span></label>`;
+    }).join('');
+    return head+rows;
+  }).join('');
+}
+function pickerTools(containerId, selKey){
+  const n=(window[selKey]||[]).length;
+  return `<input id="${containerId}_search" placeholder="Search name / role / ID…" value="${esc(window[selKey+'_q']||'')}" oninput="pickFilter('${containerId}','${selKey}')">
+    <div class="picktools"><a onclick="pickAll('${selKey}','${containerId}',true)">Select all shown</a><a onclick="pickAll('${selKey}','${containerId}',false)">Clear</a><span class="small muted" id="${selKey}_cnt">${n?n+' selected':''}</span></div>`;
+}
+function pickToggle(selKey,id,on){
+  if(!Array.isArray(window[selKey])) window[selKey]=[];
+  if(on){ if(!window[selKey].includes(id)) window[selKey].push(id); }
+  else { window[selKey]=window[selKey].filter(x=>x!==id); }
+  pickCount(selKey);
+}
+function pickCount(selKey){
+  const el=document.getElementById(selKey+'_cnt');
+  if(el){ const n=(window[selKey]||[]).length; el.textContent=n?n+' selected':''; }
+}
+function pickFilter(containerId, selKey){
+  const box=document.getElementById(containerId+'_search');
+  window[selKey+'_q']=box?box.value:'';
+  const q=String(window[selKey+'_q']||'').toLowerCase().trim();
+  const list=document.getElementById(containerId); if(!list) return;
+  list.querySelectorAll('.pickrow').forEach(el=>{
+    const hay=el.getAttribute('data-hay')||'';
+    el.style.display=(!q||hay.indexOf(q)>=0)?'':'none';
+  });
+  list.querySelectorAll('.pickgroup').forEach(g=>{
+    let n=0,nx=g.nextElementSibling;
+    while(nx && !nx.classList.contains('pickgroup')){ if(nx.classList.contains('pickrow') && nx.style.display!=='none') n++; nx=nx.nextElementSibling; }
+    g.style.display=n?'':'none';
+  });
+}
+function pickAll(selKey, containerId, on){
+  const list=document.getElementById(containerId); if(!list) return;
+  list.querySelectorAll('.pickrow').forEach(el=>{
+    if(el.style.display==='none') return;
+    const cb=el.querySelector('input'); if(!cb) return;
+    if(on && !cb.checked){ cb.checked=true; pickToggle(selKey,cb.value,true); }
+    if(!on && cb.checked){ cb.checked=false; pickToggle(selKey,cb.value,false); }
+  });
+  pickCount(selKey);
+}
+function loadFromDict(){
+  const sec = isSuper() ? (window.__assignSec || SECTIONS[0]) : current.section;
+  const roles=memberRolesOf(sec);
+  const aNorm=window.__assignRole?String(window.__assignRole).trim().toLowerCase():'';
+  const roleSel=aNorm?(roles.find(r=>String(r).trim().toLowerCase()===aNorm)||roles[0]):(roles[0]||'');
+  const rr=roleSel?String(roleSel).trim().toLowerCase():'';
+  const f = window.__dictFreq || 'All';
+  const list = DB.dict.filter(d=>d.section===sec && (!rr||String(d.role||'').trim().toLowerCase()===rr) && (f==='All'||d.frequency===f));
+  if(!list.length){ toast('No dictionary tasks for this selection.'); return; }
+  assignRows = assignRows.filter(r=>r.title.trim());
+  list.forEach(d=>assignRows.push({title:d.title, estMin:d.estMin, priority:d.priority, frequency:d.frequency}));
+  if(!assignRows.length) assignRows=[{title:'',estMin:30,priority:'Medium',frequency:'One-time'}];
+  toast(list.length+' task(s) loaded from the dictionary.');
+  render();
+}
+function removeRow(i){ assignRows.splice(i,1); if(!assignRows.length) addRow(); else render(); }
+function useDict(id){ const d=DB.dict.find(x=>x.id===id); if(!d) return; assignRows.push({title:d.title,estMin:d.estMin,priority:d.priority,frequency:d.frequency}); render(); }
+function saveDictFromRows(){
+  const sec = isSuper() ? (window.__assignSec || SECTIONS[0]) : current.section, role=window.__assignRole||'';
+  if(!role){ toast('Pick a role first.'); return; }
+  let n=0;
+  assignRows.forEach(r=>{ if(!r.title.trim()) return;
+    DB.dict.push({id:uid('d'), section:sec, role, title:r.title.trim(), estMin:+r.estMin||0, priority:r.priority, frequency:r.frequency}); n++; });
+  save(); toast(n+' task(s) saved to the dictionary.'); render();
+}
+function submitAssign(){
+  const scope = isSuper() ? (window.__assignScope || 'dept') : 'dept';
+  const sec = isSuper() ? (window.__assignSec || SECTIONS[0]) : current.section, role=window.__assignRole||'';
+  const shift=document.getElementById('assignShift').value;
+  const memberIds=(window.__assignSel||[]).slice();
+  const valid=assignRows.filter(r=>r.title.trim());
+  if(scope!=='all' && !role){ toast('Select a role.'); return; }
+  if(!memberIds.length){ toast('Select at least one member.'); return; }
+  if(!valid.length){ toast('Add at least one task.'); return; }
+  memberIds.forEach(mid=>{
+    const mem = scope==='all' ? DB.users.find(u=>u.id===mid) : null;
+    const tSec = (scope==='all' && mem) ? mem.section : sec;
+    const tRole = (scope==='all' && mem) ? mem.role : role;
+    valid.forEach(r=>{
+      const t={id:uid('t'), code:'TSK-'+String(DB.seq.task++).padStart(4,'0'), title:r.title.trim(), desc:'',
+        section:tSec, role:tRole, assigneeId:mid, supervisorId:current.id, estMin:+r.estMin||0, actualMin:0,
+        priority:r.priority, shift, dueDate:r.dueDate||dateStr(0), frequency:r.frequency,
+        status:'Not Started', createdAt:Date.now(), updatedAt:Date.now(), timerStart:null, attachments:[], comments:[]};
+      DB.tasks.push(t);
+      notify(mid, `New task ${t.code}`, `${t.title}\nRole: ${tRole} · Est: ${t.estMin} min · Priority: ${t.priority} · Shift: ${shift} · Due: ${t.dueDate}\nAssigned by ${current.name}.`);
+    });
+  });
+  if(scope==='all'){
+    /* Alert the department supervisor(s) of each affected department. */
+    const secs=new Set(memberIds.map(mid=>{ const m=DB.users.find(u=>u.id===mid); return m?m.section:null; }).filter(Boolean));
+    secs.forEach(s=>notifyDept(s, 'Tasks assigned', `${current.name} assigned task(s) to staff in ${s}.`, current.id));
+  }
+  save(); toast(`${valid.length} task(s) assigned to ${memberIds.length} member(s).`); assignRows=[]; window.__assignSel=[]; window.__assignSel_q=''; go('tasks');
+}
+
+/* -------------------------- cross functional task ------------------------ */
+let crossRows=[];
+function addCrossRow(){ crossRows.push({title:'',estMin:30,priority:'Medium',frequency:'One-time'}); render(); }
+function removeCrossRow(i){ crossRows.splice(i,1); if(!crossRows.length) addCrossRow(); else render(); }
+function crossSecSel(){ return window.__crossSec || (SECTIONS.indexOf(current.section)>=0 ? current.section : SECTIONS[0]); }
+function crossDictRoles(sec){
+  const s=x=>String(x==null?'':x).trim().toLowerCase();
+  const map={};
+  DB.dict.filter(d=>d.section===sec).forEach(d=>{ if(d.role){ const k=s(d.role); if(!map[k]) map[k]=d.role; } });
+  DB.users.filter(u=>u.section===sec).forEach(u=>{ if(u.role){ const k=s(u.role); if(!map[k]) map[k]=u.role; } });
+  return Object.keys(map).sort().map(k=>map[k]);
+}
+function loadCrossFromDict(){
+  const cSec=crossSecSel();
+  const dRole=window.__crossRole || (crossDictRoles(cSec)[0]||'');
+  const dNorm=dRole?String(dRole).trim().toLowerCase():'';
+  const f=window.__crossDictFreq||'All';
+  const list=DB.dict.filter(d=>d.section===cSec && (!dNorm||String(d.role||'').trim().toLowerCase()===dNorm) && (f==='All'||d.frequency===f));
+  if(!list.length){ toast('No dictionary tasks for this selection.'); return; }
+  crossRows=crossRows.filter(r=>r.title.trim());
+  list.forEach(d=>crossRows.push({title:d.title, estMin:d.estMin, priority:d.priority, frequency:d.frequency}));
+  if(!crossRows.length) crossRows=[{title:'',estMin:30,priority:'Medium',frequency:'One-time'}];
+  toast(list.length+' task(s) loaded from the dictionary.'); render();
+}
+function saveCrossDictFromRows(){
+  const cSec=crossSecSel();
+  const role=window.__crossRole || (crossDictRoles(cSec)[0]||'');
+  if(!role){ toast('Pick a role for the dictionary first.'); return; }
+  let n=0;
+  crossRows.forEach(r=>{ if(!r.title.trim()) return;
+    DB.dict.push({id:uid('d'), section:cSec, role, title:r.title.trim(), estMin:+r.estMin||0, priority:r.priority, frequency:r.frequency}); n++; });
+  if(!n){ toast('Add at least one task first.'); return; }
+  save(); toast(n+' task(s) saved to the dictionary.'); render();
+}
+function crossView(){
+  const cSec=crossSecSel();
+  const sups=DB.users.filter(u=>u.type==='supervisor' && u.status==='approved' && u.section===cSec)
+    .sort((a,b)=>String(a.name).localeCompare(b.name));
+  if(!crossRows.length) crossRows=[{title:'',estMin:30,priority:'Medium',frequency:'One-time'}];
+  const picker=memberPickerHtml('crossMember','__crossSel',sups,
+    { labelOf:m=>`${m.name} · ${m.role} (${m.enroll})` });
+  const rowsHtml=crossRows.map((r,i)=>`
+    <div class="taskrow">
+      <input placeholder="Task title" value="${esc(r.title)}" oninput="crossRows[${i}].title=this.value">
+      <input type="number" min="1" title="Estimated minutes" value="${r.estMin}" oninput="crossRows[${i}].estMin=this.value">
+      <select onchange="crossRows[${i}].priority=this.value">${PRIORITIES.map(p=>`<option ${p===r.priority?'selected':''}>${p}</option>`).join('')}</select>
+      <select onchange="crossRows[${i}].frequency=this.value">${FREQ.map(f=>`<option ${f===r.frequency?'selected':''}>${f}</option>`).join('')}</select>
+      <input type="date" value="${r.dueDate||dateStr(0)}" oninput="crossRows[${i}].dueDate=this.value">
+      <button class="btn sm red" onclick="removeCrossRow(${i})" title="Remove">×</button>
+    </div>`).join('');
+  const dictRoles=crossDictRoles(cSec);
+  let dictRole=window.__crossRole;
+  if(!dictRole || dictRoles.indexOf(dictRole)<0) dictRole=(dictRoles[0]||'');   /* drop stale role */
+  window.__crossRole=dictRole||'';
+  const dNorm=dictRole?String(dictRole).trim().toLowerCase():'';
+  const dictFreq=window.__crossDictFreq||'All';
+  const dictMatch=DB.dict.filter(d=>d.section===cSec && (!dNorm||String(d.role||'').trim().toLowerCase()===dNorm) && (dictFreq==='All'||d.frequency===dictFreq));
+  const dictPreview=dictMatch.length?dictMatch.map(d=>`<div class="small" style="display:flex;justify-content:space-between;border-bottom:1px solid #eef1f4;padding:4px 0">
+      <span>${esc(d.title)} <span class="muted">· ${esc(d.frequency)} · ${esc(d.priority)}</span></span><span>${d.estMin} min</span></div>`).join('')
+    :'<span class="small muted">No saved tasks for this selection.</span>';
+  return `<div class="card"><h2>Cross Functional Task</h2>
+    <p class="desc">Give a task to a <b>supervisor in any department</b>. The task is filed under that supervisor's department and appears in their My Tasks. You (${esc(current.name)}) keep visibility of what you raised.</p>
+    <div class="row">
+      <div class="field" style="min-width:200px"><label>Target department</label>
+        <select onchange="window.__crossSec=this.value;window.__crossSel=[];window.__crossSel_q='';window.__crossRole='';window.__crossDictFreq='';render()">
+          ${SECTIONS.map(s=>`<option ${s===cSec?'selected':''}>${esc(s)}</option>`).join('')}</select></div>
+      <div class="field" style="min-width:250px"><label>Assign to supervisor(s)</label>
+        ${pickerTools('crossMember','__crossSel')}
+        <div id="crossMember" class="picker">${picker}</div></div>
+      <div class="field" style="min-width:150px"><label>Shift</label>
+        <select id="crossShift">${SHIFTS.map(s=>`<option>${s}</option>`).join('')}</select></div>
+    </div>
+    <h3>Work dictionary — ${esc(cSec)}</h3>
+    <p class="desc">Reuse tasks you gave before. Save the rows below, then load them next time.</p>
+    <div class="row">
+      <div class="field" style="min-width:200px"><label>Role (dictionary)</label>
+        <select onchange="window.__crossRole=this.value;render()">${dictRoles.map(r=>`<option ${r===dictRole?'selected':''}>${esc(r)}</option>`).join('')||'<option value="">— none —</option>'}</select></div>
+      <div class="field" style="min-width:150px"><label>Frequency</label>
+        <select onchange="window.__crossDictFreq=this.value;render()">
+          <option ${dictFreq==='All'?'selected':''}>All</option>
+          ${FREQ.map(f=>`<option ${dictFreq===f?'selected':''}>${f}</option>`).join('')}
+        </select></div>
+      <button class="btn" onclick="loadCrossFromDict()">⬇ Load ${dictMatch.length} task(s)</button>
+    </div>
+    <div style="margin:10px 0 4px">${dictPreview}</div>
+    <h3>Tasks to assign</h3>
+    <div class="taskrow small muted" style="font-weight:600"><div>Task title</div><div>Est. min</div><div>Priority</div><div>Frequency</div><div>Due date</div><div></div></div>
+    ${rowsHtml}
+    <button class="btn ghost sm" onclick="addCrossRow()">+ Add another task</button>
+    <hr style="border:none;border-top:1px solid var(--line);margin:16px 0">
+    <button class="btn" onclick="submitCross()">Assign cross-functional task &amp; notify</button>
+    <button class="btn ghost" onclick="saveCrossDictFromRows()">Save these as department task list</button>
+  </div>`;
+}
+function submitCross(){
+  const cSec=crossSecSel();
+  const supIds=(window.__crossSel||[]).slice();
+  const rows=crossRows.filter(r=>r.title.trim());
+  const shiftEl=document.getElementById('crossShift');
+  const shift=shiftEl?shiftEl.value:'General';
+  if(!supIds.length){ toast('Select at least one supervisor.'); return; }
+  if(!rows.length){ toast('Add at least one task.'); return; }
+  let made=0;
+  supIds.forEach(sid=>{
+    const sup=DB.users.find(u=>u.id===sid); if(!sup) return;
+    rows.forEach(r=>{
+      const t={id:uid('t'), code:'TSK-'+String(DB.seq.task++).padStart(4,'0'), title:r.title.trim(), desc:'',
+        section:sup.section, role:sup.role, assigneeId:sid, supervisorId:current.id, estMin:+r.estMin||0, actualMin:0,
+        priority:r.priority, shift, dueDate:r.dueDate||dateStr(0), frequency:r.frequency,
+        status:'Not Started', createdAt:Date.now(), updatedAt:Date.now(), timerStart:null, attachments:[], comments:[],
+        cross:true, assignedById:current.id, assignedByName:current.name, fromSection:current.section};
+      DB.tasks.push(t); made++;
+      notify(sid, `New cross-functional task ${t.code}`, `${t.title}\nFrom: ${current.name} (${current.section})\nEst: ${t.estMin} min · Priority: ${t.priority} · Shift: ${shift} · Due: ${t.dueDate}`);
+    });
+    notifyDept(sup.section, 'Cross-functional task received', `${current.name} (${current.section}) assigned cross-functional task(s) to ${sup.name}.`, sid);
+  });
+  save(); toast(`${made} cross-functional task(s) assigned.`); crossRows=[]; window.__crossSel=[]; window.__crossSel_q=''; go('tasks');
+}
+
+/* --------------------------------- team --------------------------------- */
+function teamSec(){ return isSuper() ? (window.__teamSec || SECTIONS[0]) : current.section; }
+function teamView(){
+  const sec=teamSec();
+  const pending = isSuper()
+    ? DB.users.filter(u=>u.status==='pending')
+    : DB.users.filter(u=>u.status==='pending' && u.type==='member' && u.section===sec);
+  const approved = DB.users.filter(u=>u.status==='approved' && u.section===sec && u.id!==current.id);
+  const pendRows=pending.map(m=>`<tr><td>${esc(m.name)}</td><td>${esc(m.enroll)}</td>
+      ${isSuper()?`<td>${typeBadge(m.type)}</td><td>${esc(m.section)}</td>`:''}<td>${esc(m.role)}</td>
+      <td><button class="btn sm green" onclick="approveUser('${m.id}',1)">Approve</button>
+          <button class="btn sm red" onclick="approveUser('${m.id}',0)">Reject</button></td></tr>`).join('');
+  const appRows=approved.map(m=>{ const t=DB.tasks.filter(x=>x.assigneeId===m.id);
+    return `<tr><td>${esc(m.name)}</td><td>${esc(m.enroll)}</td><td>${typeBadge(m.type)}</td><td>${esc(m.role)}</td>
+      <td>${t.length}</td><td>${t.filter(x=>x.status==='Done'||x.status==='Verified').length}</td>
+      <td><button class="btn sm ghost" onclick="removeUser('${m.id}')">Remove</button></td></tr>`; }).join('');
+  const hint=(document.getElementById('addType') && document.getElementById('addType').value==='supervisor')
+    ? (SUPERVISOR_HINT[sec]||'Supervisor') : ((ROLE_HINTS[sec]||[])[0]||'Role');
+  const typeOpts = isSuper()
+    ? `<option value="member">Team Member</option><option value="supervisor">Supervisor</option><option value="superadmin">Super Admin</option>`
+    : `<option value="member">Team Member</option><option value="supervisor">Supervisor</option>`;
+  return `
+  <div class="card"><h2>Add Person</h2>
+    <p class="desc">${isSuper()?'Super Admin — add people to any department.':'Add a supervisor or team member to your department.'} Accounts added here are active immediately.</p>
+    <div class="row">
+      ${isSuper()?`<div class="field" style="min-width:170px"><label>Department</label>
+        <select onchange="window.__teamSec=this.value;render()">${SECTIONS.map(s=>`<option ${s===sec?'selected':''}>${esc(s)}</option>`).join('')}</select></div>`:''}
+      <div class="field" style="min-width:150px"><label>Type</label><select id="addType">${typeOpts}</select></div>
+      <div class="field" style="min-width:190px"><label>Full name</label><input id="addName" placeholder="e.g. Abdul Karim"></div>
+      <div class="field" style="min-width:130px"><label>Enroll ID</label><input id="addEnroll" placeholder="e.g. 560901"></div>
+      <div class="field" style="min-width:200px"><label>Role / Designation <span class="muted" style="font-weight:400">— type your own</span></label>
+        <input id="addRole" placeholder="${esc(hint)}"></div>
+      <button class="btn" onclick="addMember()">Add person</button>
+    </div>
+    <p class="hint">People can also self-register from the sign-in screen — those appear below for approval.</p>
+    <hr style="border:none;border-top:1px solid var(--line);margin:14px 0">
+    <h3>Bulk upload (CSV)</h3>
+    <div class="row">
+      <div class="field" style="min-width:280px"><label>Choose CSV file</label>
+        <input type="file" accept=".csv,text/csv" onchange="importCSV(this)"></div>
+      <button class="btn ghost" onclick="downloadTemplate()">⬇ Download CSV template</button>
+    </div>
+    <p class="hint">Columns: <b>name, enroll, role, type</b> (type = member or supervisor; optional, defaults to member).
+      Department = <b>${esc(sec)}</b>. Existing enroll IDs are skipped.</p>
+  </div>
+  <div class="card"><h2>Pending Approvals ${pending.length?badge(pending.length+' waiting','b-orange'):''}</h2>
+    <p class="desc">${isSuper()?'All pending registrations across departments.':'Team members of '+esc(sec)+' waiting for your approval.'}</p>
+    <table><tr><th>Name</th><th>Enroll</th>${isSuper()?'<th>Type</th><th>Department</th>':''}<th>Role</th><th>Action</th></tr>
+    ${pendRows||`<tr><td colspan="${isSuper()?6:4}" class="empty">No pending approvals.</td></tr>`}</table>
+  </div>
+  <div class="card"><h2>Team Directory — ${esc(sec)}</h2>
+    <table><tr><th>Name</th><th>Enroll</th><th>Type</th><th>Role</th><th>Tasks</th><th>Completed</th><th></th></tr>
+    ${appRows||'<tr><td colspan=7 class="empty">No members yet. Add one above.</td></tr>'}</table>
+  </div>`;
+}
+function addMember(){
+  const type=document.getElementById('addType').value;
+  const name=document.getElementById('addName').value.trim();
+  const enroll=document.getElementById('addEnroll').value.trim();
+  const role=document.getElementById('addRole').value.trim();
+  const sec=teamSec();
+  if(!name||!enroll||!role){ toast('Please fill name, enroll and role.'); return; }
+  if(DB.users.some(u=>u.enroll.toLowerCase()===enroll.toLowerCase())){ toast('This enroll ID already exists.'); return; }
+  ensureRole(sec, role);
+  DB.users.push({id:uid('u'), enroll, name, section:sec, role, type, status:'approved', updatedAt:Date.now()});
+  notifyDept(sec, 'Team update', `${name} (${enroll}) added as ${type==='superadmin'?'Super Admin':(type==='supervisor'?'Supervisor':'Member')} — ${role}.`, current.id);
+  save(); toast(`${name} added to ${sec}.`); render();
+}
+function approveUser(id, ok){
+  const u=DB.users.find(x=>x.id===id);
+  if(!u){ toast('That person is no longer in the list — refreshing.'); syncNow(); return; }
+  if(!isSuper() && u.section!==current.section){ toast('Not your department.'); return; }
+  u.status=ok?'approved':'rejected';
+  u.updatedAt=Date.now();   /* makes this change win the next merge */
+  notify(u.id, `Registration ${ok?'approved':'rejected'}`, `Your registration for ${u.section} (${u.role}) was ${ok?'approved':'rejected'} by ${current.name}.`);
+  save(); render();
+}
+function syncNow(){ if(typeof smartSync==='function'){ syncing=false; smartSync(); } else render(); }
+function removeUser(id){ const u=DB.users.find(x=>x.id===id); if(!u) return; if(!confirm('Remove '+u.name+'?')) return;
+  tombstone(id); DB.users=DB.users.filter(x=>x.id!==id); save(); render(); }
+
+/* ------------------------------ deletions ------------------------------- */
+function deleteTask(id){
+  const t=DB.tasks.find(x=>x.id===id); if(!t) return;
+  if(!confirm('Delete task '+t.code+' — '+t.title+'?')) return;
+  tombstone(id);
+  DB.tasks=DB.tasks.filter(x=>x.id!==id);
+  notify(t.assigneeId, 'Task deleted', `${current.name} deleted task ${t.code} (${t.title}).`);
+  save(); toast('Task deleted.'); if(expandedTask===id) expandedTask=null; closeModal(); render();
+}
+function deleteTasksOf(sec){
+  const list = (sec==='All') ? DB.tasks : DB.tasks.filter(t=>t.section===sec);
+  const n=list.length;
+  if(!n){ toast('No tasks'+(sec==='All'?'':' in '+sec)+'.'); return; }
+  if(!confirm('Delete ALL '+n+' task(s)'+(sec==='All'?' in every department':' of '+sec)+'? This cannot be undone.')) return;
+  tombstoneAll(list.map(t=>t.id));
+  DB.tasks = (sec==='All') ? [] : DB.tasks.filter(t=>t.section!==sec);
+  save(); toast(n+' task(s) deleted'+(sec==='All'?' (all departments)':' from '+sec)+'.'); render();
+}
+function clearTasks(){
+  const n=DB.tasks.length;
+  if(!n){ toast('No tasks to delete.'); return; }
+  if(!confirm('Delete ALL '+n+' tasks in every department? This cannot be undone.')) return;
+  tombstoneAll(DB.tasks.map(t=>t.id)); DB.tasks=[]; save(); toast('All tasks deleted.'); render();
+}
+function clearTeam(){
+  const n=DB.users.filter(u=>u.type!=='superadmin').length;
+  if(!n){ toast('No team members to remove.'); return; }
+  if(!confirm('Remove ALL '+n+' team members and supervisors in every department? This cannot be undone.')) return;
+  tombstoneAll(DB.users.filter(u=>u.type!=='superadmin').map(u=>u.id));
+  DB.users=DB.users.filter(u=>u.type==='superadmin');
+  save(); toast('All team members removed.'); render();
+}
+
+/* ---------------------------- CSV bulk import --------------------------- */
+function parseCSV(text){
+  const rows=[]; let row=[], cur='', q=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i];
+    if(q){
+      if(c==='"'){ if(text[i+1]==='"'){ cur+='"'; i++; } else q=false; }
+      else cur+=c;
+    } else {
+      if(c==='"') q=true;
+      else if(c===','){ row.push(cur); cur=''; }
+      else if(c==='\n'){ row.push(cur); rows.push(row); row=[]; cur=''; }
+      else if(c==='\r'){ /* ignore */ }
+      else cur+=c;
+    }
+  }
+  if(cur!=='' || row.length){ row.push(cur); rows.push(row); }
+  return rows.filter(r=>r.some(c=>String(c).trim()!==''));
+}
+function downloadTemplate(){
+  const csv='name,enroll,role,type\nAbdul Karim,560901,Line Operator,member\nMd. Rashed,560902,Shift Incharge,supervisor\n';
+  download('HRML_team_template.csv', csv);
+}
+function importCSV(input){
+  const f=input.files && input.files[0]; if(!f) return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    let rows;
+    try{ rows=parseCSV(String(e.target.result||'')); }catch(err){ toast('Could not read the CSV file.'); return; }
+    if(!rows.length){ toast('The CSV file is empty.'); return; }
+
+    let idx={name:0, enroll:1, role:2, type:3};
+    const first=rows[0].map(x=>String(x).trim().toLowerCase());
+    const hasHeader=first.some(h=>['name','full name','fullname','enroll','enroll id','enrollid','enroll no','role','designation','type','account type'].indexOf(h)>=0);
+    let start=0;
+    if(hasHeader){
+      const find=arr=>first.findIndex(h=>arr.indexOf(h)>=0);
+      idx={
+        name: find(['name','full name','fullname']),
+        enroll: find(['enroll','enroll id','enrollid','enroll no','enrollment','id']),
+        role: find(['role','designation','role / designation','role/designation']),
+        type: find(['type','account type'])
+      };
+      start=1;
+    }
+
+    let added=0, skipped=0, sup=0;
+    for(let i=start;i<rows.length;i++){
+      const r=rows[i];
+      const g=k=> (idx[k]>=0 && idx[k]<r.length) ? String(r[idx[k]]==null?'':r[idx[k]]).trim() : '';
+      const name=g('name'), enroll=g('enroll');
+      const role=g('role')||'Team Member';
+      let type=(g('type')||'member').toLowerCase();
+      type = type.indexOf('sup')===0 ? 'supervisor' : 'member';
+      if(!name || !enroll){ skipped++; continue; }
+      if(DB.users.some(u=>u.enroll.toLowerCase()===enroll.toLowerCase())){ skipped++; continue; }
+      ensureRole(teamSec(), role);
+      DB.users.push({id:uid('u'), enroll, name, section:teamSec(), role, type, status:'approved', updatedAt:Date.now()});
+      if(type==='supervisor') sup++;
+      added++;
+    }
+    save();
+    input.value='';
+    toast(added+' added'+(sup?(' ('+sup+' supervisor'+(sup>1?'s':'')+')'):'')+', '+skipped+' skipped (missing or duplicate).');
+    render();
+  };
+  reader.onerror=function(){ toast('Could not read the CSV file.'); };
+  reader.readAsText(f);
+}
+
+/* --------------------------- roles & dictionary ------------------------- */
+function dictSec(){ return isSuper() ? (window.__dictSec || SECTIONS[0]) : current.section; }
+function dictView(){
+  const sec=dictSec();
+  const roles=rolesOf(sec);
+  let role=window.__dictRole;
+  if(!role || !roles.some(r=>r.name===role)) role=(roles[0]&&roles[0].name)||'';  /* drop stale role */
+  window.__dictRole=role;
+  const dict=DB.dict.filter(d=>d.section===sec && (!role||d.role===role));
+  const roleRows=roles.map(r=>`<tr><td>${esc(r.name)}</td><td>${DB.users.filter(u=>u.section===sec&&u.role===r.name).length}</td>
+    <td>${DB.dict.filter(d=>d.section===sec&&d.role===r.name).length}</td>
+    <td><button class="btn sm red" onclick="delRole('${r.id}')">Delete</button></td></tr>`).join('');
+  const dictRows=dict.map(d=>`<tr><td>${esc(d.title)}</td><td>${esc(d.role)}</td><td>${d.estMin} min</td>
+    <td>${prioBadge(d.priority)}</td><td>${esc(d.frequency)}</td>
+    <td><button class="btn sm red" onclick="delDict('${d.id}')">Delete</button></td></tr>`).join('');
+  return `
+  <div class="card"><h2>Roles — ${esc(sec)}</h2><p class="desc">Roles are created automatically when you add a person. You can also add one here.</p>
+    <div class="row">
+      ${isSuper()?`<div class="field" style="min-width:180px"><label>Department</label>
+        <select onchange="window.__dictSec=this.value;window.__dictRole='';render()">${SECTIONS.map(s=>`<option ${s===sec?'selected':''}>${esc(s)}</option>`).join('')}</select></div>`:''}
+      <div class="field" style="min-width:240px"><label>New role</label><input id="newRole" placeholder="e.g. Packer Operator"></div>
+      <button class="btn" onclick="addRole()">Add role</button>
+    </div>
+    <table><tr><th>Role</th><th>People</th><th>Saved tasks</th><th></th></tr>${roleRows||'<tr><td colspan=4 class="empty">No roles yet.</td></tr>'}</table>
+  </div>
+  <div class="card"><h2>Role-wise Task Dictionary</h2><p class="desc">Save frequently used tasks per role so they can be reused when assigning.</p>
+    <div class="row">
+      <div class="field" style="min-width:220px"><label>Role</label>
+        <select id="dictRoleSel" onchange="window.__dictRole=this.value;render()">${roles.map(r=>`<option ${r.name===role?'selected':''}>${esc(r.name)}</option>`).join('')||'<option value="">—</option>'}</select></div>
+      <div class="field" style="min-width:260px"><label>Task title</label><input id="dTitle"></div>
+      <div class="field" style="min-width:100px"><label>Est. min</label><input id="dMin" type="number" value="30"></div>
+      <div class="field" style="min-width:120px"><label>Priority</label><select id="dPrio">${PRIORITIES.map(p=>`<option>${p}</option>`).join('')}</select></div>
+      <div class="field" style="min-width:130px"><label>Frequency</label><select id="dFreq">${FREQ.map(f=>`<option>${f}</option>`).join('')}</select></div>
+      <button class="btn" onclick="addDict()">Save to dictionary</button>
+    </div>
+    <table><tr><th>Task</th><th>Role</th><th>Time</th><th>Priority</th><th>Frequency</th><th></th></tr>
+    ${dictRows||'<tr><td colspan=6 class="empty">No saved tasks for this role.</td></tr>'}</table>
+  </div>`;
+}
+function addRole(){
+  const sec=dictSec(), name=document.getElementById('newRole').value.trim();
+  if(!name){ toast('Enter a role name.'); return; }
+  if(DB.roles.some(r=>r.section===sec&&r.name.toLowerCase()===name.toLowerCase())){ toast('Role already exists.'); return; }
+  ensureRole(sec, name); save(); render();
+}
+function delRole(id){ const r=DB.roles.find(x=>x.id===id); if(!r) return; if(!confirm('Delete role '+r.name+'?')) return;
+  tombstone(id); DB.roles=DB.roles.filter(x=>x.id!==id); save(); render(); }
+function addDict(){
+  const sec=dictSec();
+  const sel=document.getElementById('dictRoleSel');
+  const role=(sel&&sel.value)||window.__dictRole||'';   /* read the live dropdown first */
+  const title=document.getElementById('dTitle').value.trim();
+  if(!role){ toast('Pick a role.'); return; }
+  if(!title){ toast('Enter a task title.'); return; }
+  DB.dict.push({id:uid('d'), section:sec, role, title, estMin:+document.getElementById('dMin').value||0,
+    priority:document.getElementById('dPrio').value, frequency:document.getElementById('dFreq').value});
+  save(); render();
+}
+function delDict(id){ const d=DB.dict.find(x=>x.id===id); if(!d) return; tombstone(id); DB.dict=DB.dict.filter(x=>x.id!==id); save(); render(); }
+
+/* ------------------------------- reports -------------------------------- */
+function dstr(ts){ const d=new Date(ts); const p=n=>String(n).padStart(2,'0'); return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()); }
+function taskDateKey(t){
+  if(dateBasis==='due') return t.dueDate||'';
+  if(dateBasis==='updated') return t.updatedAt? dstr(t.updatedAt) : '';
+  return t.createdAt? dstr(t.createdAt) : '';
+}
+function dateWiseTasks(){
+  let ts=visibleTasks(current);
+  if(isSuper() && window.__repSec && window.__repSec!=='All') ts=ts.filter(t=>t.section===window.__repSec);
+  if(dateFrom) ts=ts.filter(t=>taskDateKey(t)>=dateFrom);
+  if(dateTo) ts=ts.filter(t=>taskDateKey(t)<=dateTo);
+  return ts;
+}
+function reportsView(){
+  /* all reports below use the same date basis + range as the Date-wise record */
+  const ts=dateWiseTasks();
+  const group=(fn)=>{ const m={}; ts.forEach(t=>{ const k=fn(t); (m[k]=m[k]||{n:0,est:0,act:0,done:0,over:0}); m[k].n++;
+    m[k].est+=+t.estMin||0; m[k].act+=+t.actualMin||0; if(t.status==='Done'||t.status==='Verified') m[k].done++; if(isOverdue(t)) m[k].over++; }); return m; };
+  const table=(m)=>Object.keys(m).sort((a,b)=>m[b].n-m[a].n).map(k=>{ const r=m[k];
+    return `<tr><td>${esc(k)}</td><td>${r.n}</td><td>${r.done}</td><td>${Math.round(r.done*100/r.n)}%</td><td>${r.over}</td><td>${r.est}</td><td>${r.act}</td><td>${r.est?Math.round(r.act*100/r.est):0}%</td></tr>`;
+  }).join('')||'<tr><td colspan=8 class="empty">—</td></tr>';
+  const head=`<tr><th>Group</th><th>Tasks</th><th>Done</th><th>Completion</th><th>Overdue</th><th>Est. min</th><th>Actual min</th><th>Time used</th></tr>`;
+
+  /* ---- date-wise record ---- */
+  const dw=dateWiseTasks();
+  const dates=[...new Set(dw.map(taskDateKey).filter(Boolean))].sort().reverse();
+  const tot={n:0,est:0,act:0,c:{}}; STATUSES.forEach(s=>tot.c[s]=0);
+  const dwRows=dates.map(d=>{
+    const rows=dw.filter(t=>taskDateKey(t)===d);
+    const c={}; STATUSES.forEach(s=>c[s]=0); rows.forEach(t=>c[t.status]++);
+    const est=rows.reduce((a,t)=>a+(+t.estMin||0),0), act=rows.reduce((a,t)=>a+(+t.actualMin||0),0);
+    tot.n+=rows.length; tot.est+=est; tot.act+=act; STATUSES.forEach(s=>tot.c[s]+=c[s]);
+    return `<tr><td><b>${esc(d)}</b></td><td>${rows.length}</td>${STATUSES.map(s=>`<td>${c[s]||''}</td>`).join('')}<td>${est}</td><td>${act}</td></tr>`;
+  }).join('');
+  const dwDetail=dw.slice().sort((a,b)=>taskDateKey(b).localeCompare(taskDateKey(a))).map(t=>`
+    <tr><td class="small">${esc(taskDateKey(t))}</td>
+      <td><b>${esc(t.code)}</b><div class="small muted">${esc(t.title)}</div></td>
+      <td class="small">${esc(t.role)}</td><td class="small">${esc(user(t.assigneeId).name)}</td>
+      <td>${statusBadge(t.status)}</td><td>${prioBadge(t.priority)}</td>
+      <td class="small">${t.estMin} / ${t.actualMin}</td></tr>`).join('');
+
+  return `
+  <div class="card"><h2>Reports — ${isSuper()?'All Departments':esc(current.section)}</h2>
+    <p class="desc">Every report below follows the <b>date range</b> (by due date) selected in the Date-wise record. Adjust it there to filter all sections and exports.</p>
+    <div class="row">
+      ${isSuper()?`<div class="field" style="min-width:200px"><label>Department</label>
+        <select onchange="window.__repSec=this.value;render()">
+          <option value="All" ${(window.__repSec||'All')==='All'?'selected':''}>All departments</option>
+          ${SECTIONS.map(s=>`<option ${window.__repSec===s?'selected':''}>${esc(s)}</option>`).join('')}
+        </select></div>`:''}
+      <button class="btn" onclick="exportCSV()">⬇ Export all tasks (CSV)</button>
+      <button class="btn" onclick="exportDateWise()">⬇ Export date-wise record (CSV)</button>
+      <button class="btn ghost" onclick="exportDict()">⬇ Export dictionary (CSV)</button>
+    </div>
+  </div>
+
+  <div class="card"><h2>Date-wise Task &amp; Status Record</h2>
+    <p class="desc">Tasks grouped by date with status counts — for trend and performance analysis.</p>
+    <div class="row">
+      <div class="field" style="min-width:160px"><label>From</label><input type="date" value="${dateFrom}" onchange="dateFrom=this.value;render()"></div>
+      <div class="field" style="min-width:160px"><label>To</label><input type="date" value="${dateTo}" onchange="dateTo=this.value;render()"></div>
+      <button class="btn ghost" onclick="dateFrom='';dateTo='';render()">Clear filter</button>
+    </div>
+    <table>
+      <tr><th>Date</th><th>Total</th>${STATUSES.map(s=>`<th>${esc(s)}</th>`).join('')}<th>Est. min</th><th>Actual min</th></tr>
+      ${dwRows||'<tr><td colspan="11" class="empty">No records in this range.</td></tr>'}
+      ${dates.length?`<tr style="font-weight:700;background:#eef3f8"><td>Total</td><td>${tot.n}</td>${STATUSES.map(s=>`<td>${tot.c[s]||''}</td>`).join('')}<td>${tot.est}</td><td>${tot.act}</td></tr>`:''}
+    </table>
+  </div>
+
+  <div class="card"><h2>Task Detail — filtered</h2>
+    <table><tr><th>Date</th><th>Task</th><th>Role</th><th>Assignee</th><th>Status</th><th>Priority</th><th>Est / Actual</th></tr>
+    ${dwDetail||'<tr><td colspan=7 class="empty">No records.</td></tr>'}</table>
+  </div>
+
+  <div class="card"><h2>By Status</h2><p class="desc">Within the selected date range.</p><table>${head}${table(group(t=>t.status))}</table></div>
+  <div class="card"><h2>By Role</h2><p class="desc">Within the selected date range.</p><table>${head}${table(group(t=>t.role))}</table></div>
+  <div class="card"><h2>By Team Member</h2><p class="desc">Within the selected date range.</p><table>${head}${table(group(t=>user(t.assigneeId).name))}</table></div>`;
+}
+function exportDateWise(){
+  const ts=dateWiseTasks().slice().sort((a,b)=>taskDateKey(b).localeCompare(taskDateKey(a)));
+  const head=['Date','Code','Title','Department','Role','Assignee','Enroll','Status','Priority','Shift','Frequency','EstMin','ActualMin'];
+  const rows=ts.map(t=>[taskDateKey(t),t.code,t.title,t.section,t.role,user(t.assigneeId).name,user(t.assigneeId).enroll,t.status,t.priority,t.shift,t.frequency,t.estMin,t.actualMin]);
+  download('HRML_datewise_tasks.csv',[head,...rows].map(r=>r.map(c=>`"${String(c==null?'':c).replace(/"/g,'""')}"`).join(',')).join('\n'));
+}
+function download(name,text){ const b=new Blob([text],{type:'text/csv;charset=utf-8;'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=name; a.click(); URL.revokeObjectURL(a.href); }
+function exportCSV(){
+  const ts=dateWiseTasks();
+  const head=['Code','Title','Department','Role','Assignee','Enroll','Status','Priority','Shift','Frequency','EstMin','ActualMin','DueDate','Overdue','Created','Updated'];
+  const rows=ts.map(t=>[t.code,t.title,t.section,t.role,user(t.assigneeId).name,user(t.assigneeId).enroll,t.status,t.priority,t.shift,t.frequency,t.estMin,t.actualMin,t.dueDate,isOverdue(t)?'Yes':'No',fmt(t.createdAt),fmt(t.updatedAt)]);
+  download('HRML_tasks.csv',[head,...rows].map(r=>r.map(c=>`"${String(c==null?'':c).replace(/"/g,'""')}"`).join(',')).join('\n'));
+}
+function exportDict(){
+  const head=['Department','Role','Task','EstMin','Priority','Frequency'];
+  const rows=DB.dict.map(d=>[d.section,d.role,d.title,d.estMin,d.priority,d.frequency]);
+  download('HRML_dictionary.csv',[head,...rows].map(r=>r.map(c=>`"${c}"`).join(',')).join('\n'));
+}
+
+/* ------------------------------ departments ----------------------------- */
+function departmentsView(){
+  const rows=SECTIONS.map(s=>{
+    const sups=DB.users.filter(u=>u.type==='supervisor'&&u.section===s&&u.status==='approved').length;
+    const mems=DB.users.filter(u=>u.type==='member'&&u.section===s&&u.status==='approved').length;
+    const pend=DB.users.filter(u=>u.status==='pending'&&u.section===s).length;
+    const t=DB.tasks.filter(x=>x.section===s);
+    const done=t.filter(x=>x.status==='Done'||x.status==='Verified').length;
+    const over=t.filter(isOverdue).length;
+    const est=t.reduce((a,x)=>a+(+x.estMin||0),0), act=t.reduce((a,x)=>a+(+x.actualMin||0),0);
+    return `<tr><td><b>${esc(s)}</b></td><td>${sups}</td><td>${mems}</td>
+      <td>${pend?badge(pend,'b-orange'):'—'}</td><td>${t.length}</td><td>${done}</td>
+      <td>${t.length?Math.round(done*100/t.length):0}%</td><td>${over?badge(over,'b-red'):'—'}</td>
+      <td class="small">${est} / ${act}</td>
+      <td><button class="btn sm ghost" onclick="window.__teamSec='${s}';go('team')">Team</button>
+          <button class="btn sm ghost" onclick="window.__assignSec='${s}';window.__assignRole='';assignRows=[];go('assign')">Assign</button>
+          <button class="btn sm ghost" onclick="window.__repSec='${s}';go('reports')">Reports</button></td></tr>`;
+  }).join('');
+  const tot=DB.tasks.length;
+  const danger = isSuper() ? `
+  <div class="card" style="border-color:#f3d6d3;background:#fffafa"><h2 style="color:#C0392B">Danger Zone — Super Admin</h2>
+    <p class="desc">Permanent deletions. These cannot be undone.</p>
+    <div class="row">
+      <div class="field" style="min-width:220px"><label>Department</label>
+        <select id="delSec">
+          <option value="All">All departments</option>
+          ${SECTIONS.map(s=>`<option>${esc(s)}</option>`).join('')}
+        </select></div>
+      <button class="btn red" onclick="deleteTasksOf(document.getElementById('delSec').value)">Delete tasks of selected department</button>
+      <button class="btn red" onclick="clearTasks()">Delete ALL tasks (${tot})</button>
+      <button class="btn red" onclick="clearTeam()">Remove ALL team members</button>
+      <button class="btn" style="background:#7F8C8D" onclick="openDedupe()">Clean duplicate accounts (${dupGroups().length} groups)</button>
+    </div>
+  </div>` : '';
+  return `<div class="card"><h2>Departments — Super Admin</h2>
+    <p class="desc">Overall status of every department (${tot} tasks across ${SECTIONS.length} departments). Manage any department directly from here.</p>
+    <table><tr><th>Department</th><th>Supervisors</th><th>Members</th><th>Pending</th><th>Tasks</th><th>Done</th><th>Completion</th><th>Overdue</th><th>Est / Actual min</th><th>Actions</th></tr>
+    ${rows}</table></div>
+  ${danger}`;
+}
+/* Duplicate accounts share an Enroll ID (often created by re-registration).
+   Showing tasks by enroll keeps them visible, but the data is still messy. */
+function cleanSectionVal(s){
+  s=String(s==null?'':s).trim();
+  if(SECTIONS.indexOf(s)>=0) return s;
+  const base=s.split('.')[0].trim();
+  return SECTIONS.indexOf(base)>=0?base:s;
+}
+function dupGroups(){
+  const norm=s=>String(s==null?'':s).trim().toLowerCase();
+  const map={};
+  DB.users.forEach(u=>{ const k=norm(u.enroll); if(!k) return; (map[k]=map[k]||[]).push(u); });
+  return Object.keys(map).map(k=>({enroll:k, users:map[k]})).filter(g=>g.users.length>1);
+}
+function openDedupe(){
+  const groups=dupGroups();
+  const badSec=DB.users.filter(u=>cleanSectionVal(u.section)!==String(u.section||'').trim());
+  if(!groups.length && !badSec.length){ toast('No duplicates or invalid departments found.'); return; }
+  const rows=groups.map(g=>{
+    const names=[...new Set(g.users.map(u=>esc(u.name)))].join(' / ');
+    const types=g.users.map(u=>esc(u.type)).join(', ');
+    const secs=[...new Set(g.users.map(u=>esc(u.section)))].join(' | ');
+    return `<tr><td>${names}</td><td>${esc(g.users[0].enroll)}</td><td class="small">${types}</td><td class="small">${secs}</td><td>${g.users.length}</td></tr>`;
+  }).join('');
+  modal(`<h3>Clean duplicate accounts</h3>
+    <p class="desc">Accounts sharing the same Enroll ID. Merging keeps the best account, moves its tasks &amp; notifications to it, and removes the rest. Groups with different names under one Enroll ID are skipped for manual review.</p>
+    ${groups.length?`<table><tr><th>Name(s)</th><th>Enroll</th><th>Types</th><th>Departments</th><th>#</th></tr>${rows}</table>`:'<p class="small muted">No duplicate Enroll IDs.</p>'}
+    ${badSec.length?`<p class="small">${badSec.length} account(s) have an invalid department (extra text after the department name) and will be corrected.</p>`:''}
+    <div style="margin-top:12px"><button class="btn" style="background:#C0392B" onclick="runDedupe()">Merge ${groups.length} group(s) &amp; fix ${badSec.length} department(s)</button>
+    <button class="btn ghost" onclick="closeModal()">Cancel</button></div>`);
+}
+function runDedupe(){
+  const groups=dupGroups();
+  let merged=0, removed=0, fixed=0, skipped=0;
+  groups.forEach(g=>{
+    const uniqNames=[...new Set(g.users.map(u=>String(u.name||'').trim().toLowerCase()))];
+    if(uniqNames.length!==1){ skipped++; return; }
+    const score=u=>{ let s=0; if(SECTIONS.indexOf(cleanSectionVal(u.section))>=0) s+=100;
+      s+=DB.tasks.filter(t=>t.assigneeId===u.id).length;
+      if(u.status==='approved') s+=10; if(u.type==='supervisor') s+=5; return s; };
+    const sorted=g.users.slice().sort((a,b)=>score(b)-score(a));
+    const keep=sorted[0];
+    if(String(keep.section||'').trim()!==cleanSectionVal(keep.section)) keep.section=cleanSectionVal(keep.section);
+    sorted.slice(1).forEach(bad=>{
+      DB.tasks.forEach(t=>{ if(t.assigneeId===bad.id) t.assigneeId=keep.id; if(t.supervisorId===bad.id) t.supervisorId=keep.id; });
+      DB.notify.forEach(n=>{ if(n.to===bad.id) n.to=keep.id; });
+      tombstone(bad.id);
+      DB.users=DB.users.filter(u=>u.id!==bad.id);
+      removed++;
+    });
+    merged++;
+  });
+  DB.users.forEach(u=>{ const c=cleanSectionVal(u.section); if(c!==String(u.section||'').trim()){ u.section=c; fixed++; } });
+  save(); render();
+  toast(`Merged ${merged} group(s), removed ${removed} duplicate(s), fixed ${fixed} department(s)${skipped?', skipped '+skipped+' ambiguous':''}.`);
+}
+
+/* ------------------------------- workload ------------------------------- */
+function loadColor(p){ return p>100?'#C0392B':p>=80?'#E67E22':'#1E8449'; }
+function workloadScope(u, sec){ return isSuper() ? (sec==='All' || u.section===sec) : (u.section===current.section); }
+function firstOfMonth(){ const d=new Date(); const p=n=>String(n).padStart(2,'0'); return d.getFullYear()+'-'+p(d.getMonth()+1)+'-01'; }
+function daysBetween(a,b){ const A=new Date(a+'T00:00:00'), B=new Date(b+'T00:00:00'); return Math.max(1, Math.round((B-A)/86400000)+1); }
+function workloadView(){
+  const avail=+DB.settings.dailyMinutes||480;
+  const from=window.__loadFrom||dateStr(0);
+  const to=window.__loadTo||dateStr(0);
+  const days=daysBetween(from,to);
+  const cap=avail*days;                       /* available minutes per person over the range */
+  const sec=isSuper() ? (window.__loadSec||'All') : current.section;
+  const scope=u=>workloadScope(u, sec);
+  const inScopeSec=s=>isSuper()?(sec==='All'||s===sec):(s===current.section);
+
+  const dayTasks=DB.tasks.filter(t=>t.dueDate && t.dueDate>=from && t.dueDate<=to && inScopeSec(t.section));
+
+  /* ---- by role ---- */
+  const roleKeys=[];
+  DB.roles.forEach(r=>{ if(isSuper()?(sec==='All'||r.section===sec):r.section===current.section) roleKeys.push(r.section+'\u0001'+r.name); });
+  const roleRows=roleKeys.map(k=>{
+    const [s,role]=k.split('\u0001');
+    const mems=DB.users.filter(u=>u.status==='approved'&&u.type==='member'&&u.section===s&&u.role===role);
+    const ts=dayTasks.filter(t=>t.section===s&&t.role===role);
+    const mins=ts.reduce((a,t)=>a+(+t.estMin||0),0);
+    const av=mems.length*cap;
+    return {s,role,mems:mems.length,ts:ts.length,mins,av,pct:av?Math.round(mins*100/av):0};
+  }).sort((a,b)=>b.pct-a.pct);
+
+  /* ---- by person ---- */
+  const memberRows=DB.users.filter(u=>u.status==='approved'&&u.type==='member'&&scope(u)).map(u=>{
+    const ts=dayTasks.filter(t=>t.assigneeId===u.id);
+    const mins=ts.reduce((a,t)=>a+(+t.estMin||0),0);
+    return {u,ts:ts.length,mins,pct:Math.round(mins*100/cap)};
+  }).sort((a,b)=>b.pct-a.pct);
+
+  const totMins=dayTasks.reduce((a,t)=>a+(+t.estMin||0),0);
+  const totAv=memberRows.length*cap;
+  const totPct=totAv?Math.round(totMins*100/totAv):0;
+
+  const bar=p=>`<div class="bar" style="min-width:80px"><i style="width:${Math.min(p,100)}%;background:${loadColor(p)}"></i></div><span class="small"><b>${p}%</b></span>`;
+
+  /* ---- by department (super admin) ---- */
+  const deptRows=SECTIONS.map(s=>{
+    const mems=DB.users.filter(u=>u.status==='approved'&&u.type==='member'&&u.section===s);
+    const ts=dayTasks.filter(t=>t.section===s);
+    const mins=ts.reduce((a,t)=>a+(+t.estMin||0),0);
+    const av=mems.length*cap;
+    return {s,mems:mems.length,ts:ts.length,mins,av,pct:av?Math.round(mins*100/av):0};
+  }).filter(d=>d.mems||d.ts).sort((a,b)=>b.pct-a.pct);
+
+  const deptTable=deptRows.map(d=>`<tr>
+      <td><b>${esc(d.s)}</b></td><td>${d.mems}</td><td>${d.ts}</td><td>${d.mins}</td><td>${d.av}</td>
+      <td>${bar(d.pct)}</td>
+      <td><button class="btn sm ghost" onclick="window.__loadSec='${d.s}';go('workload')">Open</button></td></tr>`).join('')
+      ||'<tr><td colspan=7 class="empty">No department load for this date.</td></tr>';
+
+  const deptCard = isSuper() ? `
+  <div class="card"><h2>Load by Department</h2>
+    <p class="desc">Department-wise capacity vs assigned minutes. Available = members × ${avail} × ${days} days.</p>
+    <table><tr><th>Department</th><th>Members</th><th>Tasks</th><th>Assigned min</th><th>Available min</th><th>Load %</th><th></th></tr>
+    ${deptTable}</table>
+  </div>` : '';
+
+  const roleTable=roleRows.map(r=>`<tr>
+      <td><b>${esc(r.role)}</b><div class="small muted">${esc(r.s)}</div></td>
+      <td>${r.mems}</td><td>${r.ts}</td><td>${r.mins}</td><td>${r.av}</td>
+      <td>${bar(r.pct)}</td></tr>`).join('')||'<tr><td colspan=6 class="empty">No roles in scope.</td></tr>';
+
+  const memberTable=memberRows.map(m=>`<tr>
+      <td><b>${esc(m.u.name)}</b><div class="small muted">${esc(m.u.enroll)} · ${esc(m.u.section)}</div></td>
+      <td>${esc(m.u.role)}</td><td>${m.ts}</td><td>${m.mins}</td><td>${cap}</td>
+      <td>${bar(m.pct)}</td></tr>`).join('')||'<tr><td colspan=6 class="empty">No team members in scope.</td></tr>';
+
+  return `
+  <div class="card"><h2>Workload — ${esc(sec==='All'?'All Departments':sec)}</h2>
+    <p class="desc">Capacity vs assigned task minutes over a date range. Load % = assigned minutes ÷ available minutes.</p>
+    <div class="row">
+      <div class="field" style="min-width:160px"><label>From</label>
+        <input type="date" value="${from}" onchange="window.__loadFrom=this.value;render()"></div>
+      <div class="field" style="min-width:160px"><label>To</label>
+        <input type="date" value="${to}" onchange="window.__loadTo=this.value;render()"></div>
+      <button class="btn ghost" onclick="window.__loadFrom=dateStr(0);window.__loadTo=dateStr(0);render()">Today</button>
+      <button class="btn ghost" onclick="window.__loadFrom=firstOfMonth();window.__loadTo=dateStr(0);render()">This month</button>
+      ${isSuper()?`<div class="field" style="min-width:200px"><label>Department</label>
+        <select onchange="window.__loadSec=this.value;render()">
+          <option value="All" ${sec==='All'?'selected':''}>All departments</option>
+          ${SECTIONS.map(s=>`<option ${sec===s?'selected':''}>${esc(s)}</option>`).join('')}
+        </select></div>`:''}
+      <div class="field" style="min-width:180px"><label>Available minutes / person / day</label>
+        <input type="number" min="1" value="${avail}" onchange="DB.settings.dailyMinutes=+this.value||480;save();render()"></div>
+    </div>
+    <div class="grid g4">
+      <div class="kpi"><div class="v">${dayTasks.length}</div><div class="l">Tasks in range</div></div>
+      <div class="kpi"><div class="v">${totMins}</div><div class="l">Assigned minutes</div></div>
+      <div class="kpi"><div class="v">${totAv}</div><div class="l">Available minutes</div></div>
+      <div class="kpi"><div class="v" style="color:${loadColor(totPct)}">${totPct}%</div><div class="l">Overall load</div></div>
+    </div>
+    <p class="hint"><b>${days}</b> day(s) · ${esc(from)} → ${esc(to)} · per person capacity = ${avail} × ${days} = <b>${cap} min</b>.
+      &nbsp; Load colour: <b style="color:#1E8449">under 80%</b> · <b style="color:#E67E22">80–100%</b> · <b style="color:#C0392B">over 100%</b></p>
+  </div>
+
+  <div class="card"><h2>Load by Role</h2>
+    <p class="desc">Available minutes = members × ${avail} × ${days} days.</p>
+    <table><tr><th>Role</th><th>Members</th><th>Tasks</th><th>Assigned min</th><th>Available min</th><th>Load %</th></tr>
+    ${roleTable}</table>
+  </div>
+
+  ${deptCard}
+
+  <div class="card"><h2>Load by Team Member</h2>
+    <p class="desc">Available minutes = ${avail} × ${days} days = ${cap} min per person.</p>
+    <table><tr><th>Member</th><th>Role</th><th>Tasks</th><th>Assigned min</th><th>Available min</th><th>Load %</th></tr>
+    ${memberTable}</table>
+  </div>`;
+}
+
+function notifyView(){
+  const list=myNotifs();
+  const rows=list.map(n=>`<div class="nrow ${n.read?'':'unread'}">
+      <div class="t">${esc(n.title)}</div><div class="b">${esc(n.body)}</div><div class="m">${fmt(n.at)}</div></div>`).join('');
+  return `<div class="card"><h2>Notifications</h2>
+    <p class="desc">Task assignments, approvals and updates relevant to you.</p>
+    ${rows||'<div class="empty">No notifications.</div>'}</div>`;
+}
+
+/* ------------------------------ task detail ----------------------------- */
+function taskPanel(t){
+  const a=user(t.assigneeId), s=user(t.supervisorId);
+  const isAssignee=current.id===t.assigneeId;
+  const isSup = isSuper() || (current.type==='supervisor' && current.section===t.section);
+  const comments=t.comments.map(c=>`<div style="border-left:3px solid #cfe0ee;padding:6px 10px;margin-bottom:6px">
+    <b>${esc(user(c.by).name)}</b> <span class="small muted">${fmt(c.at)}</span><div class="small">${esc(c.text)}</div></div>`).join('')||'<div class="small muted">No comments.</div>';
+  const atts=t.attachments.map(f=>`<span class="pill">📎 ${esc(f.name)} <span class="muted">${esc(f.size)}</span></span>`).join('')||'<span class="small muted">No attachments.</span>';
+  const statusOpts=MEMBER_STATUSES.map(x=>`<option ${x===t.status?'selected':''}>${x}</option>`).join('');
+  const memberPanel=isAssignee?`<h3>Update status</h3>
+    <div class="row">
+      <div class="field" style="min-width:170px"><label>Status</label><select id="stSel">${statusOpts}</select></div>
+      <div class="field" style="min-width:130px"><label>Actual minutes</label><input id="stMin" type="number" value="${t.actualMin||0}"></div>
+      <button class="btn green" onclick="updateStatus('${t.id}')">Submit update</button>
+      <button class="btn ghost" onclick="toggleTimer('${t.id}')">${t.timerStart?'⏹ Stop timer':'▶ Start timer'}</button>
+    </div>`:'';
+  const supPanel=isSup?`<h3>Supervisor actions</h3>
+    <div class="row">
+      <button class="btn green" onclick="verifyTask('${t.id}',1)">✔ Verify as done</button>
+      <button class="btn red" onclick="verifyTask('${t.id}',0)">↺ Reopen / reject</button>
+    </div>`:'';
+  return `<div class="grid g2 small">
+      <div><b>Assignee:</b> ${esc(a.name)} (${esc(a.enroll)})</div><div><b>Supervisor:</b> ${esc(s.name)}</div>
+      <div><b>Estimated:</b> ${t.estMin} min</div><div><b>Actual:</b> ${t.actualMin} min ${t.timerStart?'· timer running':''}</div>
+      <div><b>Shift:</b> ${esc(t.shift)}</div><div><b>Frequency:</b> ${esc(t.frequency)}</div>
+      <div><b>Due:</b> ${t.dueDate||'—'}</div><div><b>Created:</b> ${fmt(t.createdAt)}</div>
+    </div>
+    <h3>Attachments (evidence)</h3><div>${atts}</div>
+    ${(isAssignee||isSup)?`<div style="margin-top:8px"><input type="file" onchange="attachFile('${t.id}',this)"></div>`:''}
+    <h3>Comments</h3><div>${comments}</div>
+    <div class="row" style="margin-top:8px"><div class="field" style="flex:1;min-width:220px;margin-bottom:0"><input id="cmtText" placeholder="Write a comment…" onkeydown="if(event.key==='Enter'){event.preventDefault();addComment('${t.id}')}"></div>
+      <button class="btn ghost" onclick="addComment('${t.id}')">Comment</button></div>
+    ${memberPanel}${supPanel}
+    ${isSup?`<div style="margin-top:14px;border-top:1px solid var(--line);padding-top:12px">
+      <button class="btn red" onclick="deleteTask('${t.id}')">🗑 Delete this task</button></div>`:''}`;
+}
+function afterTaskAction(id){
+  if(document.getElementById('modalBg')) openTask(id); else render();
+}
+function openTask(id){
+  const t=DB.tasks.find(x=>x.id===id); if(!t) return;
+  modal(`
+    <h2>${esc(t.code)} · ${esc(t.title)}</h2>
+    <div style="margin-bottom:10px">${statusBadge(t.status)} ${prioBadge(t.priority)} ${badge(t.section,'b-blue')} ${badge(t.role,'b-grey')} ${isOverdue(t)?badge('Overdue','b-red'):''}</div>
+    ${taskPanel(t)}
+    <div style="margin-top:16px"><button class="btn grey" onclick="closeModal()">Close</button></div>`);
+}
+function updateStatus(id){
+  const t=DB.tasks.find(x=>x.id===id); if(!t) return;
+  t.status=document.getElementById('stSel').value; t.actualMin=+document.getElementById('stMin').value||0; t.updatedAt=Date.now();
+  if(t.supervisorId) notify(t.supervisorId, `Task ${t.code} updated`, `${current.name} set ${t.code} (${t.title}) to "${t.status}". Actual: ${t.actualMin} min.`);
+  save(); toast('Status updated.'); closeModal(); render();
+}
+function toggleTimer(id){
+  const t=DB.tasks.find(x=>x.id===id); if(!t) return;
+  if(t.timerStart){ const mins=Math.max(1,Math.round((Date.now()-t.timerStart)/60000)); t.actualMin=(+t.actualMin||0)+mins; t.timerStart=null; toast(`Timer stopped · +${mins} min.`); }
+  else { t.timerStart=Date.now(); toast('Timer started.'); }
+  t.updatedAt=Date.now(); save(); afterTaskAction(id);
+}
+function attachFile(id,input){ const t=DB.tasks.find(x=>x.id===id); const f=input.files[0]; if(!f) return;
+  t.attachments.push({name:f.name,size:Math.round(f.size/1024)+' KB'}); save(); afterTaskAction(id); }
+function addComment(id){ const t=DB.tasks.find(x=>x.id===id); const txt=document.getElementById('cmtText').value.trim(); if(!txt) return;
+  t.comments.push({by:current.id,at:Date.now(),text:txt}); t.updatedAt=Date.now(); save(); afterTaskAction(id); }
+function verifyTask(id, ok){
+  const t=DB.tasks.find(x=>x.id===id); if(!t) return;
+  t.status=ok?'Verified':'Reopened'; t.updatedAt=Date.now();
+  notify(t.assigneeId, `Task ${t.code} ${ok?'verified':'reopened'}`, `${current.name} ${ok?'verified':'reopened'} ${t.code} (${t.title}).`);
+  save(); toast(ok?'Task verified.':'Task reopened.'); afterTaskAction(id);
+}
+function modal(html){ closeModal();
+  const bg=document.createElement('div'); bg.className='modal-bg'; bg.id='modalBg';
+  bg.innerHTML=`<div class="modal">${html}</div>`; wrapTables(bg); bg.addEventListener('click',e=>{ if(e.target===bg) closeModal(); }); document.body.appendChild(bg); }
+function closeModal(){ document.querySelectorAll('#modalBg,.modal-bg').forEach(m=>m.remove()); }
+
+updateNetGate();
+load();
+restoreSession();
+render();
+if(apiUrl()) apiLoad().then(ok=>{ if(ok) render(); });
+scheduleSyncLoop();
+</script>
+</body>
+</html>

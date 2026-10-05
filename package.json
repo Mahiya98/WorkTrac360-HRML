@@ -1,0 +1,13 @@
+{
+  "name": "akij-opex-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "WorkTrac360 - Akij Resource task/notification PWA (Azure PostgreSQL backend)",
+  "main": "wt360-server.js",
+  "scripts": {
+    "start": "node wt360-server.js"
+  },
+  "dependencies": {
+    "pg": "^8.13.1"
+  }
+}
