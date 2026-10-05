@@ -448,7 +448,7 @@ async function apiRev(){
 let pollTimer=null;
 function scheduleSyncLoop(){
   if(pollTimer) clearInterval(pollTimer);
-  /* Poll the server revision every 3s; pull the full DB only when it changed. */
+  /* Poll the server revision every 2s; pull the full DB only when it changed. */
   pollTimer=setInterval(async ()=>{
     if(document.hidden || !apiUrl() || syncing || busyInput()) return;
     try{
@@ -458,7 +458,7 @@ function scheduleSyncLoop(){
         if(ok) render();
       }
     }catch(e){}
-  }, 3000);
+  }, 2000);
 }
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden && current && apiUrl()) smartSync(); });
 window.addEventListener('focus',()=>{ if(current && apiUrl()) smartSync(); });

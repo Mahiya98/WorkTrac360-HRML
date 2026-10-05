@@ -48,9 +48,20 @@ function client() {
   return new Client(dbConfig());
 }
 
+async function open(c) {
+  for (let attempt = 0; attempt < 4; attempt++) {
+    try { await c.connect(); return; }
+    catch (e) {
+      if (attempt === 3) throw e;
+      await new Promise(r => setTimeout(r, 150 * (attempt + 1)));
+    }
+  }
+}
+
+
 async function loadDB() {
   const c = client();
-  await c.connect();
+  await open(c);
   try {
     const db = {};
     for (const t of DATA_TABLES) {
@@ -67,7 +78,7 @@ async function loadDB() {
 
 async function getRev() {
   const c = client();
-  await c.connect();
+  await open(c);
   try {
     const r = await c.query(`SELECT value FROM ${SQL.seq} WHERE key = 'mod'`);
     return { ok: true, rev: r.rows.length ? Number(r.rows[0].value) : 0 };
@@ -78,7 +89,7 @@ async function getRev() {
 
 async function saveChanges(upserts, deletes, settings, seq) {
   const c = client();
-  await c.connect();
+  await open(c);
   try {
     await c.query('BEGIN');
 
